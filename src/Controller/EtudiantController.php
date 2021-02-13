@@ -31,7 +31,7 @@ class EtudiantController extends AbstractController
         $date_1ere_inscription= "01-09-2017";
         $entityManager = $this->getDoctrine()->getManager();
 
-        $etudiant= new Etudiant();
+        $etudiant = new Etudiant();
         $etudiant->setCodeApogee('235313');
         $etudiant->setNom('Lahlou');
         $etudiant->setPrenom('Othman');
@@ -52,7 +52,7 @@ class EtudiantController extends AbstractController
 
         $entityManager->flush();
 
-        return new Response('Saved new Etudiant with id '.$etudiant->getId());
+        return new Response('Nouveau Etudiant a été créé avec id '.$etudiant->getId());
     }
     /**
      * @Route("/admin/etudiant/{id}", name="read_etudiant")
@@ -66,10 +66,10 @@ class EtudiantController extends AbstractController
 
         if(!$etudiant) {
             throw $this->createNotFoundException(
-                'No Etudiant found for id'.$id
+                "Aucun étudiant existe avec l'id ".$id
             );
         }
-        return new Response('Etudiant name has been changed to: '.$etudiant->getNom().' '.$etudiant->getPrenom());
+        return new Response("Nom de l'étudiant est: ".$etudiant->getNom().' '.$etudiant->getPrenom());
     }
 
     /**
@@ -82,7 +82,7 @@ class EtudiantController extends AbstractController
 
         if (!$etudiant) {
             throw $this->createNotFoundException(
-                'No product found for id '.$id
+                'Aucun Etudiant éxiste avec Id '.$id
             );
         }
 
@@ -104,13 +104,13 @@ class EtudiantController extends AbstractController
 
         if (!$etudiant) {
             throw $this->createNotFoundException(
-                'No product found for id '.$id
+                'No etudiant found with id '.$id
             );
         }
 
         $entityManager->remove($etudiant);
         $entityManager->flush();
 
-       return new Response('Etudiant '.$etudiant->getNom().' '.$etudiant->getPrenom().' has been deleted');
+       return new Response("L'étudiant ".$etudiant->getNom().' '.$etudiant->getPrenom().' a été supprimé');
     }
 }
