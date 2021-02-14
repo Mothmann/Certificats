@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ModuleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +28,16 @@ class Module
      * @ORM\Column(type="string", length=255)
      */
     private $liste_de_sous_modules;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=semestre::class, inversedBy="modules")
+     */
+    private $semestre;
+
+    public function __construct()
+    {
+        $this->semestre = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,6 +64,30 @@ class Module
     public function setListeDeSousModules(string $liste_de_sous_modules): self
     {
         $this->liste_de_sous_modules = $liste_de_sous_modules;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|semestre[]
+     */
+    public function getSemestre(): Collection
+    {
+        return $this->semestre;
+    }
+
+    public function addSemestre(semestre $semestre): self
+    {
+        if (!$this->semestre->contains($semestre)) {
+            $this->semestre[] = $semestre;
+        }
+
+        return $this;
+    }
+
+    public function removeSemestre(semestre $semestre): self
+    {
+        $this->semestre->removeElement($semestre);
 
         return $this;
     }

@@ -92,6 +92,11 @@ class Etudiant
      */
     private $serie_bac;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=filiere::class, inversedBy="etudiants")
+     */
+    private $filiere;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -273,6 +278,18 @@ class Etudiant
     public function setSerieBac(string $serie_bac): self
     {
         $this->serie_bac = $serie_bac;
+
+        return $this;
+    }
+
+    public function getFiliere(): ?filiere
+    {
+        return $this->filiere;
+    }
+
+    public function setFiliere(?filiere $filiere): self
+    {
+        $this->filiere = $filiere;
 
         return $this;
     }
