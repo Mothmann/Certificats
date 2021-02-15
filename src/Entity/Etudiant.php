@@ -93,7 +93,7 @@ class Etudiant
     private $serie_bac;
 
     /**
-     * @ORM\ManyToOne(targetEntity=filiere::class, inversedBy="etudiants")
+     * @ORM\ManyToOne(targetEntity=Filiere::class, inversedBy="etudiants")
      */
     private $filiere;
 

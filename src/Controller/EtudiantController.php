@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Etudiant;
+use App\Entity\Filiere;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,6 +33,7 @@ class EtudiantController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $etudiant = new Etudiant();
+
         $etudiant->setCodeApogee('235313');
         $etudiant->setNom('Lahlou');
         $etudiant->setPrenom('Othman');
@@ -47,6 +49,7 @@ class EtudiantController extends AbstractController
         $etudiant->setAnnee1ereInscriptionUniversiteMarocaine(\DateTime::createFromFormat('d-m-Y',$date_1ere_inscription));
         $etudiant->setCodeBac("DC7543");
         $etudiant->setSerieBac("PC2018");
+        $etudiant->setFiliere(null);
 
         $entityManager->persist($etudiant);
 
