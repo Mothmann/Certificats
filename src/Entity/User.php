@@ -42,6 +42,16 @@ class User implements UserInterface
      */
     private $isVerified = false;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Etudiant::class, cascade={"persist", "remove"})
+     */
+    private $etudiant;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Administrateur::class, cascade={"persist", "remove"})
+     */
+    private $administrateur;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -131,6 +141,30 @@ class User implements UserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getEtudiant(): ?Etudiant
+    {
+        return $this->etudiant;
+    }
+
+    public function setEtudiant(?Etudiant $etudiant): self
+    {
+        $this->etudiant = $etudiant;
+
+        return $this;
+    }
+
+    public function getAdministrateur(): ?Administrateur
+    {
+        return $this->administrateur;
+    }
+
+    public function setAdministrateur(?Administrateur $administrateur): self
+    {
+        $this->administrateur = $administrateur;
 
         return $this;
     }
