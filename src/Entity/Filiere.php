@@ -25,7 +25,7 @@ class Filiere
     private $libelle;
 
     /**
-     * @ORM\OneToMany(targetEntity=Etudiant::class, mappedBy="filiere")
+     * @ORM\OneToMany(targetEntity=Etudiant::class, mappedBy="Filiere")
      */
     private $etudiants;
 

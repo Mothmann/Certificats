@@ -6,6 +6,8 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Security;
+
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -167,5 +169,19 @@ class User implements UserInterface
         $this->administrateur = $administrateur;
 
         return $this;
+    }
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+    public function getCurrentUser()
+    {
+        $user = $this->security->getUser();
+    }
+    public function __toString()
+    {
+        return (string) $this->id;
     }
 }

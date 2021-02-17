@@ -30,7 +30,7 @@ class Module
     private $liste_de_sous_modules;
 
     /**
-     * @ORM\ManyToMany(targetEntity=semestre::class, inversedBy="modules")
+     * @ORM\ManyToMany(targetEntity=Semestre::class, inversedBy="modules")
      */
     private $semestre;
 

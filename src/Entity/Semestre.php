@@ -25,7 +25,7 @@ class Semestre
     private $libelle;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Module::class, mappedBy="semestre")
+     * @ORM\ManyToMany(targetEntity=Module::class, mappedBy="Semestre")
      */
     private $modules;
 

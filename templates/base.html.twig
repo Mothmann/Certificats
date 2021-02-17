@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Certificat{% endblock %}</title>
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/axentix@0.5.3/dist/css/axentix.min.css">
 
@@ -17,14 +17,13 @@
             <nav class="navbar primary">
                 <a href="{{ path('app_home') }}" class="navbar-brand">Certificats</a>
                 <div class="navbar-menu ml-auto">
-                    <a class="navbar-link" href="#">Accueil</a>
-                    <a class="navbar-link" href="#">Link 2</a>
-                    <a class="navbar-link" href="#">Link 3</a>
-                    <a class="navbar-link" href="#">Link 4</a>
+                    <a class="navbar-link" href="{{ path('app_home') }}">Accueil</a>
+                    <a class="navbar-link" href="{{ path('certificat_create') }}">Demander un certificat</a>
+                    <a class="navbar-link" href="#">Profile</a>
+                    <a class="navbar-link" href="{{ path('app_logout') }}">Se déconnecter</a>
                 </div>
             </nav>
         </header>
-
         <main>
             {% block body %}{% endblock %}
         </main>

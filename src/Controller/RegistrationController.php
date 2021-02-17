@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Etudiant;
 use App\Entity\User;
+
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use App\Security\UsersAuthenticator;
@@ -26,11 +28,12 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/register", name="app_register")
+     * @Route("/admin/register", name="app_register")
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UsersAuthenticator $authenticator): Response
     {
         $user = new User();
+        $etudiant = new Etudiant();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -56,6 +59,7 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
+
 
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
