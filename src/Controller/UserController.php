@@ -2,13 +2,22 @@
 
 namespace App\Controller;
 
+use App\Entity\Categories;
+use App\Entity\Etudiant;
 use App\Entity\Certificats;
 
+use App\Entity\User;
 use App\Form\CertificatsType;
+use phpDocumentor\Reflection\Types\Array_;
+use PhpParser\Node\Expr\Cast\Object_;
+use PhpParser\Node\Scalar\String_;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 
 
@@ -70,7 +79,7 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $certificat->addUserId($this->getUser());
+            $certificat->setUser($this->getUser());
             $certificat->setActive(1);
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -84,5 +93,41 @@ class UserController extends AbstractController
         ]);
 
     }
+    /**
+     * @Route("/admin/certificat/demande", name="demande")
+     */
+    public function demandes(): Response
+    {
+        $demande = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->demande();
+        return $this->render('user/demande.html.twig', ['demandes' => $demande]);
+    }
+    /**
+     * @Route("/admin/certificat/pdfcreate", name="pdf_create")
+     */
+    public function pdf()
+    {   $etudiants = $this->getDoctrine()
+                ->getRepository(Etudiant::class);
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        $dompdf = new Dompdf($pdfOptions);
+
+        $html = $this->renderView('user/dompdf.html.twig', [
+            'title' => "Welcome to our PDF Test",'etudiants' => $etudiants
+        ]);
+
+        $dompdf->loadHtml($html);
+
+        $dompdf->setPaper('A4', 'portrait');
+
+        $dompdf->render();
+
+         $dompdf->stream("mypdf.pdf", [
+            "Attachment" => false
+        ]);
+    }
+
 
 }

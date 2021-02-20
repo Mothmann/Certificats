@@ -21,11 +21,6 @@ class Certificats
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class)
-     */
-    private $user_id;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Categories::class)
      * @ORM\JoinColumn(nullable=false)
      */
@@ -42,39 +37,17 @@ class Certificats
      */
     private $active;
 
-    public function __construct()
-    {
-        $this->user_id = new ArrayCollection();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $user;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUserId(): Collection
-    {
-        return $this->user_id;
-    }
-
-    public function addUserId(User $userId): self
-    {
-        if (!$this->user_id->contains($userId)) {
-            $this->user_id[] = $userId;
-        }
-
-        return $this;
-    }
-
-    public function removeUserId(User $userId): self
-    {
-        $this->user_id->removeElement($userId);
-
-        return $this;
-    }
 
     public function getCategories(): ?Categories
     {
@@ -101,6 +74,18 @@ class Certificats
     public function setActive(int $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

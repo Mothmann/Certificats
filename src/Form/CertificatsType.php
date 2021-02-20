@@ -20,7 +20,7 @@ class CertificatsType extends AbstractType
             ->add('categories', EntityType::class, [
                 'class' => Categories::class,
             ])
-            ->add('Valder',SubmitType::class)
+            ->add('Valider',SubmitType::class)
         ;
 
     }

@@ -2,12 +2,16 @@
 
 namespace App\Repository;
 
+use App\Entity\Categories;
+use App\Entity\Certificats;
+use App\Entity\Etudiant;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,11 +19,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+
     }
 
     /**
@@ -64,4 +70,18 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
     */
+    /**
+     * @return Certificats[]
+     */
+    public function demande(): array
+
+    {   $entityManager = $this->getEntityManager();
+
+        $sql =$entityManager->createQuery( 'SELECT ce.id, ca.name,et.nom,et.prenom,ce.created_at
+            FROM App\Entity\Categories ca INNER JOIN App\Entity\Certificats ce WITH ca.id=ce.categories INNER JOIN App\Entity\User u WITH ce.user=u.id INNER JOIN App\Entity\Etudiant et WITH u.etudiant=et.id
+            WHERE ce.active = 1') ;
+
+
+        return $sql->getResult();
+    }
 }

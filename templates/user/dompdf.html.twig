@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Certificat de Scolarite{% endblock %}
+
+{% block body %}
+    <div class="example-wrapper">
+        <h1>
+            {{ title }}
+        </h1>
+        <h3>Le directeur de l'ecole certifie que:</h3>
+        {% for etudiant in etudiants %}
+        <ul>
+            <li>Nom :{{ etudiant.nom }}</li>
+            <li>Prenom :{{ etudiant.prenom }}</li>
+            <li>date de naissance :{{ etudiant.date_naissance }}</li>
+            <li>CNE :{{ etudiant.cne }}</li>
+            <li>a ete inscrit le :{{ etudiant.annee_1ere_inscription_universite }}</li>
+        </ul>
+        {% endfor %}
+    </div>
+{% endblock %}

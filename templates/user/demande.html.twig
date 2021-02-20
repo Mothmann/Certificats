@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <table>
+        <tr>
+            <td>id</td>
+            <td>type</td>
+            <td>nom</td>
+            <td>prenom</td>
+            <td>created_at</td>
+        </tr>
+        {% for demande in demandes %}
+            <tr>
+                <td>{{ demande.id }}</td>
+                <td>{{ demande.name }}</td>
+                <td>{{ demande.nom }}</td>
+                <td>{{ demande.prenom }}</td>
+                <td>{{ demande.created_at|date("d-m-Y") }}</td>
+                <!-- put button here for dompdf -->
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
