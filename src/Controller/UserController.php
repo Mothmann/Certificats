@@ -11,6 +11,7 @@ use App\Form\CertificatsType;
 use phpDocumentor\Reflection\Types\Array_;
 use PhpParser\Node\Expr\Cast\Object_;
 use PhpParser\Node\Scalar\String_;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 
 
@@ -106,27 +108,50 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/certificat/pdfcreate", name="pdf_create")
      */
-    public function pdf()
-    {   $etudiants = $this->getDoctrine()
-                ->getRepository(Etudiant::class);
+    public function pdf(): Response
+    {
+        // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
 
+        // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
-
+        $etudiants = $this->getDoctrine()
+            ->getRepository(Etudiant::class)
+            ->certificat(6);
+        // Retrieve the HTML generated in our twig file
         $html = $this->renderView('user/dompdf.html.twig', [
-            'title' => "Welcome to our PDF Test",'etudiants' => $etudiants
+            'title' => "Certificat de scolarite",'etudiants' => $etudiants
         ]);
 
+        // Load HTML to Dompdf
         $dompdf->loadHtml($html);
 
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
         $dompdf->setPaper('A4', 'portrait');
 
+        // Render the HTML as PDF
         $dompdf->render();
 
-         $dompdf->stream("mypdf.pdf", [
-            "Attachment" => false
-        ]);
+        // Store PDF Binary Data
+        $output = $dompdf->output();
+
+        // In this case, we want to write the file in the public directory
+        $publicDirectory = $this->getParameter('kernel.project_dir') . '/private';
+        $now = new \DateTime('now');
+        $today = $now->format('Y-m-d');
+
+        $fs=new Filesystem();
+        $fs->mkdir($publicDirectory.'/'. $today);
+        $directory = $publicDirectory.'/'. $today;
+        // e.g /var/www/project/public/mypdf.pdf
+        $pdfFilepath = $directory. '/' .'mypdf.pdf';
+
+        // Write file to the desired path
+        file_put_contents($pdfFilepath, $output);
+
+        // Send some text response
+        return new Response("The PDF file has been succesfully generated !");
     }
 
 

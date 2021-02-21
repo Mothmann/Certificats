@@ -47,4 +47,15 @@ class EtudiantRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function certificat(int $id): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT e.nom, e.prenom, e.date_naissance,e.cne,e.annee_1ere_inscription_universite
+             FROM App\Entity\Etudiant e
+             WHERE e.id = :id'
+        )->setParameter('id',$id);
+        return $query->getResult();
+    }
 }
