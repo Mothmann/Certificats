@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administrateur{% endblock %}
+
+{% block body %}
+    <style>
+        .create{
+            float: right;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+    </style>
+    {% if admins %}
+        <table id="admins" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Administrateurs</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for admin in admins %}
+                <tr>
+                    <td>{{ admin.nom }}</td>
+                    <td>
+                        <a href="/admin/administrateur/{{admin.id}}"
+                           class="btn shadow-1 rounded-1 blue dark">Show</a>
+                        <a href="/admin/modifier/etudiant/{{admin.id}}"
+                           class="btn shadow-1 rounded-1 light">Edit</a>
+                        <a href="/admin/administrateur/delete/{{admin.id}}"
+                           class="btn shadow-1 rounded-1 blue red">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="/admin/administrateur/ajouter" class="btn shadow-1 rounded-1 light create">Create</a>
+    {% else %}
+        <p>Aucun Admin</p>
+    {% endif %}
+{% endblock %}
+

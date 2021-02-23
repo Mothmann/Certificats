@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Etudiant{% endblock %}
+
+{% block body %}
+<style>
+    .create{
+        float: right;
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+</style>
+    {% if etudiants %}
+        <table id="etudiants" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Etudiants</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for etudiant in etudiants %}
+                <tr>
+                    <td>{{ etudiant.codeApogee }}</td>
+                    <td>
+                        <a href="/admin/etudiant/{{etudiant.id}}"
+                           class="btn shadow-1 rounded-1 blue dark">Show</a>
+                        <a href="/admin/modifier/etudiant/{{etudiant.id}}"
+                           class="btn shadow-1 rounded-1 light">Edit</a>
+                        <a href="/admin/etudiant/delete/{{etudiant.id}}"
+                           class="btn shadow-1 rounded-1 blue red">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="/register/ajouter/etudiant" class="btn shadow-1 rounded-1 light create">Create</a>
+    {% else %}
+        <p>Aucun Etudiant</p>
+    {% endif %}
+{% endblock %}
+
