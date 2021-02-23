@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Administrateur;
-use Doctrine\ORM\EntityManagerInterface;
 
+use App\Form\AdministrateurType;
+use App\Form\UpdateAdministrateurType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,37 +18,29 @@ class AdministrateurController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('administrateur/index.html.twig', [
-            'controller_name' => 'AdministrateurController',
-        ]);
+
+        $admin = $this->getDoctrine()->getRepository(Administrateur::class)->findAll();
+        return $this->render('administrateur/crudadmin.html.twig', array('admins' => $admin));
     }
 
     /**
-     * @Route("/admin/administrateur/create", name="create_admin")
+     * @Route ("/admin/administrateur/ajouter", name="ajouter_admin")
      */
-    public function CreateAdmin(): Response
+    public function AjouterAdmin(Request $request): Response
     {
-        $date_naissance = "03-04-1963";
-        $entityManager = $this->getDoctrine()->getManager();
-
         $admin = new Administrateur();
-        $admin->setNom('Archaoui');
-        $admin->setPrenom('Said');
-        $admin->setCin('BE354461');
-        $admin->setDateNaissance(\DateTime::createFromFormat('d-m-Y', $date_naissance));
-        $admin->setVilleNaissance('Casablanca');
-        $admin->setPaysNaissance('Maroc');
-        $admin->setSexe('M');
-        $admin->setAddresse('Rue Banafsaj Immeuble 13 etage 2 apt 4');
-        $admin->setGrade('2eme grade');
-        $admin->setService('service');
-        $admin->setPosteOccupe('directeur');
+        $form = $this->createForm(AdministrateurType::class, $admin);
 
-        $entityManager->persist($admin);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($admin);
+            $em->flush();
 
-        $entityManager->flush();
-
-        return new Response('Nouveau Administrateur a été créé avec id ' . $admin->getId());
+            return $this->redirectToRoute('administrateur');
+        }
+        return $this->render('administrateur/createadmin.html.twig', [
+            'form' => $form->createView(), 'admins' => $admin]);
     }
 
     /**
@@ -68,25 +62,27 @@ class AdministrateurController extends AbstractController
     }
 
     /**
-     * @Route("/admin/administrateur/update/{id}")
+     * @Route("/admin/modifier/administrateur/{id}", name="modifier_admin")
      */
-    public function update(int $id): Response
+
+    public function modifierAdmin(Request $request, $id): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $admin = $entityManager->getRepository(Administrateur::class)->find($id);
+        $admin = new Administrateur();
+        $admin = $this->getDoctrine()->getRepository(Administrateur::class)->find($id);
+        $form = $this->createForm(UpdateAdministrateurType::class, $admin);
 
-        if (!$admin) {
-            throw $this->createNotFoundException(
-                "Aucun administrateur éxiste avec l' ".$id
-            );
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $admin = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($admin);
+            $em->flush();
+
+            return $this->redirectToRoute('app_home');
         }
-
-        $admin->setNom('Tazi');
-        $admin->setPrenom('Ahmed');
-        $entityManager->flush();
-
-        return $this->redirectToRoute('read_admin', [
-            'id' => $admin->getId()
+        return $this->render('administrateur/updatadmin.html.twig', [
+            'form' => $form->createView(), 'admins' => $admin,
         ]);
     }
 
@@ -109,4 +105,7 @@ class AdministrateurController extends AbstractController
 
         return new Response("l'admin ".$admin->getNom().' '.$admin->getPrenom().' a été supprimé');
     }
+
+
+
 }

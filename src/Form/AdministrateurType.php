@@ -4,25 +4,33 @@ namespace App\Form;
 
 use App\Entity\Administrateur;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class AdministrateurType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
-            ->add('cin')
-            ->add('date_naissance')
-            ->add('ville_naissance')
-            ->add('pays_naissance')
-            ->add('sexe')
-            ->add('addresse')
-            ->add('grade')
-            ->add('service')
-            ->add('poste_occupe')
+            ->add('nom', TextType::class)
+            ->add('prenom', TextType::class)
+            ->add('cin', TextType::class)
+            ->add('date_naissance',DateType::class, [
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd'
+            ])
+            ->add('ville_naissance', TextType::class)
+            ->add('pays_naissance', TextType::class)
+            ->add('sexe', TextType::class)
+            ->add('addresse', TextType::class)
+            ->add('grade', TextType::class)
+            ->add('service', TextType::class)
+            ->add('poste_occupe', TextType::class)
+            ->add('ajouter', SubmitType::class)
         ;
     }
 

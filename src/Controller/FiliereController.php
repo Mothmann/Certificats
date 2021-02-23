@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Filiere;
-use Doctrine\ORM\EntityManagerInterface;
 
+use App\Form\FiliereType;
+use App\Form\UpdateFiliereType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,26 +18,28 @@ class FiliereController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('filiere/index.html.twig', [
-            'controller_name' => 'FiliereController',
-        ]);
+        $filiere = $this->getDoctrine()->getRepository(Filiere::class)->findAll();
+        return $this->render('filiere/crudfiliere.html.twig', array('filieres' => $filiere));
     }
 
     /**
-     * @Route("/admin/filiere/create", name="create_filiere")
+     * @Route ("/admin/filiere/ajouter", name="ajouter_filiere")
      */
-    public function createFiliere(): Response
+    public function AjouterFiliere(Request $request): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $filiere = new Filiere();
-        $filiere->setLibelle('info');
+        $form = $this->createForm(FiliereType::class, $filiere);
 
-        $entityManager->persist($filiere);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($filiere);
+            $em->flush();
 
-        $entityManager->flush();
-
-        return new Response('Nouvelle filière a été créé avec id '.$filiere->getId());
+            return $this->redirectToRoute('filiere');
+        }
+        return $this->render('filiere/createfiliere.html.twig', [
+            'form' => $form->createView(), 'filieres' => $filiere]);
     }
     /**
      * @Route("admin/filiere/{id}", name="read_filiere")
@@ -56,24 +60,27 @@ class FiliereController extends AbstractController
     }
 
     /**
-     * @Route("/admin/filiere/update/{id}")
+     * @Route("/admin/modifier/filiere/{id}", name="modifier_filiere")
      */
-    public function update(int $id): Response
+
+    public function modifierFiliere(Request $request, $id): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $filiere = $entityManager->getRepository(Filiere::class)->find($id);
+        $filiere = new Filiere();
+        $filiere = $this->getDoctrine()->getRepository(Filiere::class)->find($id);
+        $form = $this->createForm(UpdateFiliereType::class, $filiere);
 
-        if (!$filiere) {
-            throw $this->createNotFoundException(
-                'Aucune Filière existe avec id '.$id
-            );
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $filiere = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($filiere);
+            $em->flush();
+
+            return $this->redirectToRoute('filiere');
         }
-
-        $filiere->setLibelle("formation");
-        $entityManager->flush();
-
-        return $this->redirectToRoute('read_filiere', [
-            'id' => $filiere->getId()
+        return $this->render('filiere/updatfiliere.html.twig', [
+            'form' => $form->createView(), 'filieres' => $filiere,
         ]);
     }
     /**

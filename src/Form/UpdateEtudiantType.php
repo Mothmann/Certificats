@@ -3,31 +3,51 @@
 namespace App\Form;
 
 use App\Entity\Etudiant;
+use App\Entity\Filiere;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class UpdateEtudiantType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('code_apogee')
-            ->add('nom')
-            ->add('prenom')
-            ->add('cne')
-            ->add('cin')
-            ->add('date_naissance')
-            ->add('ville_naissance')
-            ->add('pays_naissance')
-            ->add('sexe')
-            ->add('addresse')
-            ->add('annee_1ere_inscription_universite')
-            ->add('annee_1ere_inscription_enseignement_superieur')
-            ->add('annee_1ere_inscription_universite_marocaine')
-            ->add('code_bac')
-            ->add('serie_bac')
-            ->add('filiere')
+            ->add('code_apogee', TextType::class)
+            ->add('nom', TextType::class)
+            ->add('prenom', TextType::class)
+            ->add('cne', TextType::class)
+            ->add('cin', TextType::class)
+            ->add('date_naissance',DateType::class, [
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd'
+            ])
+            ->add('ville_naissance',TextType::class)
+            ->add('pays_naissance', TextType::class)
+            ->add('sexe', TextType::class)
+            ->add('addresse', TextType::class)
+            ->add('annee_1ere_inscription_universite',DateType::class, [
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd'
+            ])
+            ->add('annee_1ere_inscription_enseignement_superieur',DateType::class, [
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd'
+            ])
+            ->add('annee_1ere_inscription_universite_marocaine',DateType::class, [
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd'
+            ])
+            ->add('code_bac', TextType::class)
+            ->add('serie_bac', TextType::class)
+            ->add('filiere', EntityType::class, [
+                'class' => Filiere::class
+            ])
+            ->add('ajouter', SubmitType::class)
         ;
     }
 
@@ -35,6 +55,7 @@ class UpdateEtudiantType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Etudiant::class,
+            'required' => 'false',
         ]);
     }
 }

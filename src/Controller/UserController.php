@@ -2,26 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\Categories;
 use App\Entity\Etudiant;
 use App\Entity\Certificats;
 
 use App\Entity\User;
 use App\Form\CertificatsType;
-use phpDocumentor\Reflection\Types\Array_;
-use PhpParser\Node\Expr\Cast\Object_;
-use PhpParser\Node\Scalar\String_;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-
-
 
 class UserController extends AbstractController
 {

@@ -4,58 +4,46 @@ namespace App\Controller;
 
 use App\Entity\Etudiant;
 
+use App\Form\EtudiantType;
+use App\Form\UpdateEtudiantType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class EtudiantController extends AbstractController
 {
+
     /**
      * @Route("/admin/etudiant", name="etudiant")
      */
     public function index(): Response
     {
-        return $this->render('etudiant/index.html.twig', [
-            'controller_name' => 'EtudiantController',
-        ]);
+        $etudiant = $this->getDoctrine()->getRepository(Etudiant::class)->findAll();
+        return $this->render('etudiant/crudetudiant.html.twig', array('etudiants' => $etudiant));
     }
+
     /**
-     * @Route("/admin/etudiant/create", name="create_etudiant")
+     * @Route("/register/ajouter/etudiant", name="ajout_etudiant")
      */
-    public function createEtudiant(): Response
+
+    public function ajouterEtudiant(Request $request): Response
     {
-
-        $date_naissance= "19-06-2000";
-        $date_inscription= "01-09-2018";
-        $date_1ere_inscription= "01-09-2017";
-        $entityManager = $this->getDoctrine()->getManager();
-
         $etudiant = new Etudiant();
-        $filiere = $entityManager->find('App:Filiere',1);
+        $form = $this->createForm(EtudiantType::class, $etudiant);
 
-        $etudiant->setCodeApogee('235313');
-        $etudiant->setNom('Lahlou');
-        $etudiant->setPrenom('Othman');
-        $etudiant->setCne('DQ1343567');
-        $etudiant->setCin('BK852134');
-        $etudiant->setDateNaissance(\DateTime::createFromFormat('d-m-Y', $date_naissance));
-        $etudiant->setVilleNaissance("Casablanca");
-        $etudiant->setPaysNaissance("Maroc");
-        $etudiant->setSexe("M");
-        $etudiant->setAddresse("Rue tacharouq Quartier ghandi immeuble 17 etage 4");
-        $etudiant->setAnnee1ereInscriptionUniversite(\DateTime::createFromFormat('d-m-Y',$date_inscription));
-        $etudiant->setAnnee1ereInscriptionEnseignementSuperieur(\DateTime::createFromFormat('d-m-Y',$date_1ere_inscription));
-        $etudiant->setAnnee1ereInscriptionUniversiteMarocaine(\DateTime::createFromFormat('d-m-Y',$date_1ere_inscription));
-        $etudiant->setCodeBac("DC7543");
-        $etudiant->setSerieBac("PC2018");
-        $etudiant->setFiliere($filiere);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($etudiant);
+            $em->flush();
 
-        $entityManager->persist($etudiant);
-
-        $entityManager->flush();
-
-        return new Response('Nouveau Etudiant a été créé avec id '.$etudiant->getId());
+            return $this->redirectToRoute('etudiant');
+        }
+        return $this->render('etudiant/createtudiant.html.twig', [
+            'form' => $form->createView(), 'etudiants' => $etudiant]);
     }
+
     /**
      * @Route("/admin/etudiant/{id}", name="read_etudiant")
      */
@@ -75,27 +63,31 @@ class EtudiantController extends AbstractController
     }
 
     /**
-     * @Route("/admin/etudiant/update/{id}")
+     * @Route("/admin/modifier/etudiant/{id}", name="modifier_etudiant")
      */
-    public function update(int $id): Response
+
+    public function modifierEtudiant(Request $request, $id): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $etudiant = $entityManager->getRepository(Etudiant::class)->find($id);
+        $etudiant = new Etudiant();
+        $etudiant = $this->getDoctrine()->getRepository(Etudiant::class)->find($id);
+        $form = $this->createForm(UpdateEtudiantType::class, $etudiant);
 
-        if (!$etudiant) {
-            throw $this->createNotFoundException(
-                'Aucun Etudiant éxiste avec Id '.$id
-            );
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $etudiant = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($etudiant);
+            $em->flush();
+
+            return $this->redirectToRoute('app_home');
         }
-
-        $etudiant->setNom('Belhad');
-        $etudiant->setPrenom('Yassine');
-        $entityManager->flush();
-
-        return $this->redirectToRoute('read_etudiant', [
-            'id' => $etudiant->getId()
+        return $this->render('etudiant/updatetudiant.html.twig', [
+            'form' => $form->createView(), 'etudiants' => $etudiant,
         ]);
     }
+
+
     /**
      * @Route("/admin/etudiant/delete/{id}")
      */

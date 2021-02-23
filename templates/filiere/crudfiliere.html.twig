@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Administrateur{% endblock %}
+{% block title %}Filiere{% endblock %}
 
 {% block body %}
     <style>
@@ -10,33 +10,33 @@
             margin-right: 10px;
         }
     </style>
-    {% if admins %}
-        <table id="admins" class="table table-striped">
+    {% if filieres %}
+        <table id="filiere" class="table table-striped">
             <thead>
             <tr>
-                <th>Administrateurs</th>
+                <th>Filiere</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            {% for admin in admins %}
+            {% for filiere in filieres %}
                 <tr>
-                    <td>{{ admin.nom }}</td>
+                    <td>{{ filiere.libelle }}</td>
                     <td>
-                        <a href="/admin/administrateur/{{admin.id}}"
+                        <a href="/admin/filiere/{{filiere.id}}"
                            class="btn shadow-1 rounded-1 blue dark">Show</a>
-                        <a href="/admin/modifier/etudiant/{{admin.id}}"
+                        <a href="/admin/modifier/filiere/{{filiere.id}}"
                            class="btn shadow-1 rounded-1 light">Edit</a>
-                        <a href="/admin/administrateur/delete/{{admin.id}}"
+                        <a href="/admin/filiere/delete/{{filiere.id}}"
                            class="btn shadow-1 rounded-1 blue red">Delete</a>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <a href="/admin/administrateur/ajouter" class="btn shadow-1 rounded-1 light create">Create</a>
+        <a href="/admin/filiere/ajouter" class="btn shadow-1 rounded-1 light create">Create</a>
     {% else %}
-        <p>Aucun Admin</p>
+        <p>Aucune Filiere</p>
     {% endif %}
 {% endblock %}
 
