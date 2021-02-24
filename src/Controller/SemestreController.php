@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Semestre;
+use App\Form\SemestreType;
+use App\Form\UpdateSemestreType;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,25 +19,27 @@ class SemestreController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('semestre/index.html.twig', [
-            'controller_name' => 'SemestreController',
-        ]);
+        $semestre = $this->getDoctrine()->getRepository(Semestre::class)->findAll();
+        return $this->render('semestre/crudsemestre.html.twig', array('semestres' => $semestre));
     }
     /**
-     * @Route("/admin/semestre/create", name="create_semestre")
+     * @Route ("/admin/semestre/ajouter", name="ajouter_semestre")
      */
-    public function createSemetre(): Response
+    public function AjouterSemestre(Request $request): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $semestre = new Semestre();
-        $semestre->setLibelle('S1');
+        $form = $this->createForm(SemestreType::class, $semestre);
 
-        $entityManager->persist($semestre);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($semestre);
+            $em->flush();
 
-        $entityManager->flush();
-
-        return new Response('Nouveau semèstre a été créé avec id '.$semestre->getId());
+            return $this->redirectToRoute('semestre');
+        }
+        return $this->render('semestre/createsemestre.html.twig', [
+            'form' => $form->createView(), 'semestres' => $semestre]);
     }
     /**
      * @Route("admin/semestre/{id}", name="read_semestre")
@@ -55,24 +60,27 @@ class SemestreController extends AbstractController
     }
 
     /**
-     * @Route("/admin/semestre/update/{id}")
+     * @Route("/admin/modifier/semestre/{id}", name="modifier_semestre")
      */
-    public function update(int $id): Response
+
+    public function modifierSemestre(Request $request, $id): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $semestre = $entityManager->getRepository(Semestre::class)->find($id);
+        $semestre = new Semestre();
+        $semestre = $this->getDoctrine()->getRepository(Semestre::class)->find($id);
+        $form = $this->createForm(UpdateSemestreType::class, $semestre);
 
-        if (!$semestre) {
-            throw $this->createNotFoundException(
-                'Aucun semèstre existe avec id '.$id
-            );
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $semestre = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($semestre);
+            $em->flush();
+
+            return $this->redirectToRoute('semestre');
         }
-
-        $semestre->setLibelle("S2");
-        $entityManager->flush();
-
-        return $this->redirectToRoute('read_semestre', [
-            'id' => $semestre->getId()
+        return $this->render('semestre/updatesemestre.html.twig', [
+            'form' => $form->createView(), 'semestres' => $semestre,
         ]);
     }
     /**

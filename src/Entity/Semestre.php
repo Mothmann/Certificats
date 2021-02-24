@@ -24,15 +24,7 @@ class Semestre
      */
     private $libelle;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Module::class, mappedBy="Semestre")
-     */
-    private $modules;
 
-    public function __construct()
-    {
-        $this->modules = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -50,31 +42,7 @@ class Semestre
 
         return $this;
     }
-
-    /**
-     * @return Collection|Module[]
-     */
-    public function getModules(): Collection
-    {
-        return $this->modules;
-    }
-
-    public function addModule(Module $module): self
-    {
-        if (!$this->modules->contains($module)) {
-            $this->modules[] = $module;
-            $module->addSemestre($this);
-        }
-
-        return $this;
-    }
-
-    public function removeModule(Module $module): self
-    {
-        if ($this->modules->removeElement($module)) {
-            $module->removeSemestre($this);
-        }
-
-        return $this;
+    public function __toString() {
+        return $this->libelle;
     }
 }

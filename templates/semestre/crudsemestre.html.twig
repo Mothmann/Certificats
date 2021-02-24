@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Filiere{% endblock %}
+{% block title %}Semestre{% endblock %}
 
 {% block body %}
     <style>
@@ -10,34 +10,34 @@
             margin-right: 10px;
         }
     </style>
-    {% if filieres %}
-        <table id="filiere" class="table table-striped">
+    {% if semestres %}
+        <table id="semestre" class="table table-striped">
             <thead>
             <tr>
-                <th>Filiere</th>
+                <th>Semestre</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            {% for filiere in filieres %}
+            {% for semestre in semestres %}
                 <tr>
-                    <td>{{ filiere.libelle }}</td>
+                    <td>{{ semestre.libelle }}</td>
                     <td>
-                        <a href="/admin/filiere/{{filiere.id}}"
+                        <a href="/admin/semestre/{{semestre.id}}"
                            class="btn shadow-1 rounded-1 blue dark">Show</a>
-                        <a href="/admin/modifier/filiere/{{filiere.id}}"
+                        <a href="/admin/modifier/semestre/{{semestre.id}}"
                            class="btn shadow-1 rounded-1 light">Edit</a>
-                        <a href="/admin/filiere/delete/{{filiere.id}}"
+                        <a href="/admin/semestre/delete/{{semestre.id}}"
                            class="btn shadow-1 rounded-1 blue red">Delete</a>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <a href="/admin/filiere/ajouter" class="btn shadow-1 rounded-1 light create">Create</a>
+        <a href="/admin/semestre/ajouter" class="btn shadow-1 rounded-1 light create">Create</a>
     {% else %}
-        <p>Aucune Filiere</p>
-        <a href="/admin/administrateur/ajouter" class="btn shadow-1 rounded-1 light create">Create</a>
+        <p>Aucun Semestre</p>
+        <a href="/admin/semestre/ajouter" class="btn shadow-1 rounded-1 light create">Create</a>
     {% endif %}
 {% endblock %}
 

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Filiere{% endblock %}
+{% block title %}Module{% endblock %}
 
 {% block body %}
     <style>
@@ -10,34 +10,34 @@
             margin-right: 10px;
         }
     </style>
-    {% if filieres %}
-        <table id="filiere" class="table table-striped">
+    {% if modules %}
+        <table id="module" class="table table-striped">
             <thead>
             <tr>
-                <th>Filiere</th>
+                <th>Module</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            {% for filiere in filieres %}
+            {% for module in modules %}
                 <tr>
-                    <td>{{ filiere.libelle }}</td>
+                    <td>{{ module.libelle }}</td>
                     <td>
-                        <a href="/admin/filiere/{{filiere.id}}"
+                        <a href="/admin/module/{{module.id}}"
                            class="btn shadow-1 rounded-1 blue dark">Show</a>
-                        <a href="/admin/modifier/filiere/{{filiere.id}}"
+                        <a href="/admin/modifier/module/{{module.id}}"
                            class="btn shadow-1 rounded-1 light">Edit</a>
-                        <a href="/admin/filiere/delete/{{filiere.id}}"
+                        <a href="/admin/module/delete/{{module.id}}"
                            class="btn shadow-1 rounded-1 blue red">Delete</a>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <a href="/admin/filiere/ajouter" class="btn shadow-1 rounded-1 light create">Create</a>
+        <a href="/admin/module/ajouter" class="btn shadow-1 rounded-1 light create">Create</a>
     {% else %}
-        <p>Aucune Filiere</p>
-        <a href="/admin/administrateur/ajouter" class="btn shadow-1 rounded-1 light create">Create</a>
+        <p>Aucun Module</p>
+        <a href="/admin/module/ajouter" class="btn shadow-1 rounded-1 light create">Create</a>
     {% endif %}
 {% endblock %}
 

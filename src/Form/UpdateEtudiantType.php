@@ -47,7 +47,7 @@ class UpdateEtudiantType extends AbstractType
             ->add('filiere', EntityType::class, [
                 'class' => Filiere::class
             ])
-            ->add('ajouter', SubmitType::class)
+            ->add('modifier', SubmitType::class)
         ;
     }
 

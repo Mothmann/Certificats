@@ -29,7 +29,7 @@ class UpdateAdministrateurType extends AbstractType
             ->add('grade', TextType::class)
             ->add('service', TextType::class)
             ->add('poste_occupe', TextType::class)
-            ->add('ajouter', SubmitType::class)
+            ->add('modifier', SubmitType::class)
         ;
     }
 

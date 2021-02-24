@@ -30,14 +30,12 @@ class Module
     private $liste_de_sous_modules;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Semestre::class, inversedBy="modules")
+     * @ORM\ManyToOne(targetEntity=Semestre::class)
      */
-    private $semestre;
+    private $Semestre;
 
-    public function __construct()
-    {
-        $this->semestre = new ArrayCollection();
-    }
+
+
 
     public function getId(): ?int
     {
@@ -68,27 +66,16 @@ class Module
         return $this;
     }
 
-    /**
-     * @return Collection|semestre[]
-     */
-    public function getSemestre(): Collection
+    public function getSemestre(): ?Semestre
     {
-        return $this->semestre;
+        return $this->Semestre;
     }
 
-    public function addSemestre(semestre $semestre): self
+    public function setSemestre(?Semestre $Semestre): self
     {
-        if (!$this->semestre->contains($semestre)) {
-            $this->semestre[] = $semestre;
-        }
+        $this->Semestre = $Semestre;
 
         return $this;
     }
 
-    public function removeSemestre(semestre $semestre): self
-    {
-        $this->semestre->removeElement($semestre);
-
-        return $this;
-    }
 }

@@ -79,7 +79,7 @@ class FiliereController extends AbstractController
 
             return $this->redirectToRoute('filiere');
         }
-        return $this->render('filiere/updatfiliere.html.twig', [
+        return $this->render('filiere/updatefiliere.html.twig', [
             'form' => $form->createView(), 'filieres' => $filiere,
         ]);
     }

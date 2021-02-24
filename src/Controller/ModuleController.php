@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Module;
-use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\ModuleType;
+use App\Form\UpdateModuleType;
+
 
 class ModuleController extends AbstractController
 {
@@ -16,27 +19,28 @@ class ModuleController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('module/index.html.twig', [
-            'controller_name' => 'ModuleController',
-        ]);
+        $module = $this->getDoctrine()->getRepository(Module::class)->findAll();
+        return $this->render('module/crudmodule.html.twig', array('modules' => $module));
     }
 
     /**
-     * @Route("/admin/module/create", name="create_module")
+     * @Route ("/admin/module/ajouter", name="ajouter_module")
      */
-    public function createModule(): Response
+    public function AjouterModule(Request $request): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $module = new Module();
-        $module->setLibelle('php');
-        $module->setListeDeSousModules('php natif-Framework');
+        $form = $this->createForm(ModuleType::class, $module);
 
-        $entityManager->persist($module);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($module);
+            $em->flush();
 
-        $entityManager->flush();
-
-        return new Response('Nouveau module a été créé avec id '.$module->getId());
+            return $this->redirectToRoute('module');
+        }
+        return $this->render('module/createmodule.html.twig', [
+            'form' => $form->createView(), 'modules' => $module]);
     }
 
     /**
@@ -58,25 +62,27 @@ class ModuleController extends AbstractController
     }
 
     /**
-     * @Route("/admin/module/update/{id}")
+     * @Route("/admin/modifier/module/{id}", name="modifier_module")
      */
-    public function update(int $id): Response
+
+    public function modifierModule(Request $request, $id): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $module = $entityManager->getRepository(Module::class)->find($id);
+        $module = new Module();
+        $module = $this->getDoctrine()->getRepository(Module::class)->find($id);
+        $form = $this->createForm(UpdateModuleType::class, $module);
 
-        if (!$module) {
-            throw $this->createNotFoundException(
-                'Aucun Module existe avec id '.$id
-            );
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $module = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($module);
+            $em->flush();
+
+            return $this->redirectToRoute('module');
         }
-
-        $module->setLibelle("UML");
-        $module->setListeDeSousModules("digramme de cas d'utilisation - diagramme d'activité");
-        $entityManager->flush();
-
-        return $this->redirectToRoute('read_module', [
-            'id' => $module->getId()
+        return $this->render('module/updatemodule.html.twig', [
+            'form' => $form->createView(), 'modules' => $module,
         ]);
     }
     /**
