@@ -16,6 +16,7 @@
             <td>nom</td>
             <td>prenom</td>
             <td>created_at</td>
+            <td>generer le certificat</td>
         </tr>
         {% for demande in demandes %}
             <tr>
@@ -24,7 +25,8 @@
                 <td>{{ demande.nom }}</td>
                 <td>{{ demande.prenom }}</td>
                 <td>{{ demande.created_at|date("d-m-Y") }}</td>
-                <!-- put button here for dompdf -->
+                <td><a href="/admin/certificat/pdfcreate/{{demande.id}}"
+                       class="btn shadow-1 rounded-1 blue dark">creer</a></td>
             </tr>
         {% endfor %}
     </table>

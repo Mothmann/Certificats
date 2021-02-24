@@ -15,7 +15,7 @@
     <body>
         <header>
             <nav class="navbar primary">
-                <a href="{{ path('app_home') }}" class="navbar-brand">Certificats</a>
+                <a href="{{ path('app_home') }}" class="logo navbar-brand">Certificats</a>
                 <div class="navbar-menu ml-auto">
                     <a class="navbar-link" href="{{ path('app_home') }}">Accueil</a>
                     <a class="navbar-link" href="{{ path('certificat_create') }}">Demander un certificat</a>
@@ -27,7 +27,6 @@
         <main>
             {% block body %}{% endblock %}
         </main>
-
         <footer class="footer primary">
             Copyright © 2020 - Certificats
         </footer>

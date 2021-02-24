@@ -9,6 +9,18 @@
 </style>
 
 <div class="example-wrapper">
+    <table>
+        <tr>
+            <td>Type</td>
+            <td>Date</td>
+        </tr>
+        {% for demande in demandes %}
+            <tr>
+                <td>{{ demande.name }}</td>
+                <td>{{ demande.created_at|date("d-m-Y")  }}</td>
+            </tr>
+        {% endfor %}
+    </table>
     <h1>Demander un certificats</h1>
     {{ form(form) }}
 </div>

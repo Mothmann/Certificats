@@ -68,6 +68,10 @@ class UserController extends AbstractController
 
     public function createCertificats(Request $request): Response
     {
+        $id = $this->getUser();
+        $demande = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->mesdemande((string)$id);
         $certificat = new Certificats;
         $form = $this->createForm(CertificatsType::class, $certificat);
 
@@ -83,7 +87,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user');
         }
         return $this->render('user/create_certificat.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView(), 'demandes' => $demande
         ]);
 
     }
@@ -98,19 +102,19 @@ class UserController extends AbstractController
         return $this->render('user/demande.html.twig', ['demandes' => $demande]);
     }
     /**
-     * @Route("/admin/certificat/pdfcreate", name="pdf_create")
+     * @Route("/admin/certificat/pdfcreate/{id}", name="pdf_create")
      */
-    public function pdf(): Response
+    public function pdf($id): Response
     {
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
-
+        $id = 6;
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
         $etudiants = $this->getDoctrine()
             ->getRepository(Etudiant::class)
-            ->certificat(6);
+            ->certificat($id);
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('user/dompdf.html.twig', [
             'title' => "Certificat de scolarite",'etudiants' => $etudiants
