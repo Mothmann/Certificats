@@ -21,9 +21,9 @@
         {% for demande in demandes %}
             <tr>
                 <td id="{{ demande.id }}">{{ demande.id }}</td>
-                <td>{{ demande.name }}</td>
                 <td>{{ demande.nom }}</td>
                 <td>{{ demande.prenom }}</td>
+                <td>{{ demande.name }}</td>
                 <td>{{ demande.created_at|date("d-m-Y") }}</td>
                 <td><a class="btn"
                        class="btn shadow-1 rounded-1 blue dark" data-id="{{ demande.id }}">creer</a></td>
@@ -36,8 +36,7 @@
         for(var x = 0; x<elements.length;x++){
             var test = elements[x];
             test.addEventListener('click',function (){
-
-                window.open("?id=" +this.getAttribute('data-id'))
+                window.open('https://localhost:8000/admin/certificat/pdfcreate'+"?id=" +this.getAttribute('data-id'))
             })
         }
     </script>{% endblock %}

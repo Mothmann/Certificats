@@ -52,9 +52,9 @@ class EtudiantRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT e.nom, e.prenom, e.date_naissance,e.cne,e.annee_1ere_inscription_universite
-             FROM App\Entity\Etudiant e
-             WHERE e.id = :id'
+            'SELECT et.nom, et.prenom, et.date_naissance,et.cne,et.annee_1ere_inscription_universite
+              FROM App\Entity\Categories ca INNER JOIN App\Entity\Certificats ce WITH ca.id=ce.categories INNER JOIN App\Entity\User u WITH ce.user=u.id INNER JOIN App\Entity\Etudiant et WITH u.etudiant=et.id
+             WHERE ce.id = :id'
         )->setParameter('id',$id);
         return $query->getResult();
     }

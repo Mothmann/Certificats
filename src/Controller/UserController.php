@@ -142,9 +142,12 @@ class UserController extends AbstractController
         $directory = $publicDirectory.'/'. $today;
         // e.g /var/www/project/public/mypdf.pdf
         $pdfFilepath = $directory. '/' .'mypdf.pdf';
-
-        // Write file to the desired path
+            // Write file to the desired path
         file_put_contents($pdfFilepath, $output);
+        $certificat = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->active($id);
+
 
         // Send some text response
         return new Response("The PDF file has been succesfully generated !");

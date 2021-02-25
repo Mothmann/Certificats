@@ -95,4 +95,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         return $sql->getResult();
     }
+    public function active(int $id): int
+
+    {   $entityManager = $this->getEntityManager();
+
+        $sql =$entityManager->createQuery( 'UPDATE App\Entity\Certificats ce 
+        SET ce.active = 0 
+        WHERE ce.id=:id')->setParameter('id',$id) ;
+
+
+
+        return $sql->getResult();
+    }
 }
