@@ -84,7 +84,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         return $sql->getResult();
     }
-    public function mesdemande(int $id): array
+    public function mesdemandes(int $id): array
 
     {   $entityManager = $this->getEntityManager();
 

@@ -20,15 +20,25 @@
         </tr>
         {% for demande in demandes %}
             <tr>
-                <td>{{ demande.id }}</td>
+                <td id="{{ demande.id }}">{{ demande.id }}</td>
                 <td>{{ demande.name }}</td>
                 <td>{{ demande.nom }}</td>
                 <td>{{ demande.prenom }}</td>
                 <td>{{ demande.created_at|date("d-m-Y") }}</td>
-                <td><a href="/admin/certificat/pdfcreate/{{demande.id}}"
-                       class="btn shadow-1 rounded-1 blue dark">creer</a></td>
+                <td><a class="btn"
+                       class="btn shadow-1 rounded-1 blue dark" data-id="{{ demande.id }}">creer</a></td>
             </tr>
         {% endfor %}
     </table>
 </div>
+    {% block javascripts %}<script>
+        var elements = document.getElementsByClassName('btn')
+        for(var x = 0; x<elements.length;x++){
+            var test = elements[x];
+            test.addEventListener('click',function (){
+
+                window.open("?id=" +this.getAttribute('data-id'))
+            })
+        }
+    </script>{% endblock %}
 {% endblock %}

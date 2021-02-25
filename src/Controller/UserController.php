@@ -71,7 +71,7 @@ class UserController extends AbstractController
         $id = $this->getUser();
         $demande = $this->getDoctrine()
                 ->getRepository(User::class)
-                ->mesdemande((string)$id);
+                ->mesdemandes((string)$id);
         $certificat = new Certificats;
         $form = $this->createForm(CertificatsType::class, $certificat);
 
@@ -102,14 +102,14 @@ class UserController extends AbstractController
         return $this->render('user/demande.html.twig', ['demandes' => $demande]);
     }
     /**
-     * @Route("/admin/certificat/pdfcreate/{id}", name="pdf_create")
+     * @Route("/admin/certificat/pdfcreate", name="pdf_create")
      */
-    public function pdf($id): Response
+    public function pdf(): Response
     {
+        $id=$_GET['id'];
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
-        $id = 6;
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
         $etudiants = $this->getDoctrine()
