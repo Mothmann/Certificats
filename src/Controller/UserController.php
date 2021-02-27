@@ -78,7 +78,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $certificat->setUser($this->getUser());
-            $certificat->setActive(1);
+            $certificat->setStatus('en cours');
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($certificat);
@@ -102,11 +102,10 @@ class UserController extends AbstractController
         return $this->render('user/demande.html.twig', ['demandes' => $demande]);
     }
     /**
-     * @Route("/admin/certificat/pdfcreate", name="pdf_create")
+     * @Route("/admin/certificat/pdfcreate/{id}", name="pdf_create")
      */
-    public function pdf(): Response
+    public function pdf(int $id): Response
     {
-        $id=$_GET['id'];
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
@@ -144,7 +143,7 @@ class UserController extends AbstractController
         $pdfFilepath = $directory. '/' .'mypdf.pdf';
             // Write file to the desired path
         file_put_contents($pdfFilepath, $output);
-        $certificat = $this->getDoctrine()
+        $this->getDoctrine()
             ->getRepository(User::class)
             ->active($id);
 
@@ -152,6 +151,14 @@ class UserController extends AbstractController
         // Send some text response
         return new Response("The PDF file has been succesfully generated !");
     }
-
-
+    /**
+     * @Route("/admin/certificat/rejeter/{id}", name="rejeter")
+     */
+    public function rejeter(int $id): Response
+    {
+        $this->getDoctrine()
+            ->getRepository(User::class)
+            ->rejeter($id);
+        return new Response("la demande a ete rejete");
+    }
 }

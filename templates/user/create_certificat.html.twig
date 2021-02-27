@@ -6,6 +6,17 @@
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .approve {
+        color: green;
+    }
+
+    .pending{
+        color: yellow;
+    }
+
+    .rejected{
+        color: red;
+    }
 </style>
 
 <div class="example-wrapper">
@@ -13,11 +24,21 @@
         <tr>
             <td>Type</td>
             <td>Date</td>
+            <td>Statut</td>
         </tr>
         {% for demande in demandes %}
             <tr>
                 <td>{{ demande.name }}</td>
                 <td>{{ demande.created_at|date("d-m-Y")  }}</td>
+                {% if (demande.status == 'terminer') %}
+                    <td class="approve">{{ demande.status }}</td>
+
+                {% elseif (demande.status == 'en cours') %}
+                    <td class="pending">{{ demande.status }}</td>
+
+                {% elseif (demande.status == 'rejete') %}
+                    <td class="rejected">{{ demande.status }}</td>
+                 {% endif %}
             </tr>
         {% endfor %}
     </table>

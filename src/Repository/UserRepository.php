@@ -79,7 +79,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $sql =$entityManager->createQuery( 'SELECT ce.id, ca.name,et.nom,et.prenom,ce.created_at
             FROM App\Entity\Categories ca INNER JOIN App\Entity\Certificats ce WITH ca.id=ce.categories INNER JOIN App\Entity\User u WITH ce.user=u.id INNER JOIN App\Entity\Etudiant et WITH u.etudiant=et.id
-            WHERE ce.active = 1') ;
+            WHERE ce.status= :status')->setParameter('status','en cours') ;
 
 
         return $sql->getResult();
@@ -88,22 +88,32 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     {   $entityManager = $this->getEntityManager();
 
-        $sql =$entityManager->createQuery( 'SELECT ca.name,ce.created_at
+        $sql =$entityManager->createQuery( 'SELECT ca.name,ce.created_at,ce.status
             FROM App\Entity\Categories ca INNER JOIN App\Entity\Certificats ce WITH ca.id=ce.categories INNER JOIN App\Entity\User u WITH ce.user=u.id INNER JOIN App\Entity\Etudiant et WITH u.etudiant=et.id
             WHERE u.id= :id')->setParameter('id',$id) ;
 
 
         return $sql->getResult();
     }
-    public function active(int $id): int
+    public function active(int $id): string
 
     {   $entityManager = $this->getEntityManager();
 
         $sql =$entityManager->createQuery( 'UPDATE App\Entity\Certificats ce 
-        SET ce.active = 0 
-        WHERE ce.id=:id')->setParameter('id',$id) ;
+        SET ce.status=:status
+        WHERE ce.id=:id')->setParameter('id',$id)->setParameter('status','terminer') ;
 
 
+
+        return $sql->getResult();
+    }
+    public function rejeter(int $id): string
+    {
+        $entityManager = $this->getEntityManager();
+
+        $sql =$entityManager->createQuery( 'UPDATE App\Entity\Certificats ce 
+        SET ce.status=:status
+        WHERE ce.id=:id')->setParameter('id',$id)->setParameter('status','rejete') ;
 
         return $sql->getResult();
     }

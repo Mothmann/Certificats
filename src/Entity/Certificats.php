@@ -33,14 +33,14 @@ class Certificats
     private $created_at;
 
     /**
-     * @ORM\Column(type="smallint")
-     */
-    private $active;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class)
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $status;
 
 
     public function getId(): ?int
@@ -66,17 +66,6 @@ class Certificats
         return $this->created_at;
     }
 
-    public function getActive(): ?int
-    {
-        return $this->active;
-    }
-
-    public function setActive(int $active): self
-    {
-        $this->active = $active;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
@@ -86,6 +75,18 @@ class Certificats
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
