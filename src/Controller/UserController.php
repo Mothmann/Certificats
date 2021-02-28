@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Etudiant;
 use App\Entity\Certificats;
+use App\Entity\Limit;
 
 use App\Entity\User;
 use App\Form\CertificatsType;
@@ -70,8 +71,8 @@ class UserController extends AbstractController
     {
         $id = $this->getUser();
         $demande = $this->getDoctrine()
-                ->getRepository(User::class)
-                ->mesdemandes((string)$id);
+            ->getRepository(User::class)
+            ->mesdemandes((string)$id);
         $certificat = new Certificats;
         $form = $this->createForm(CertificatsType::class, $certificat);
 
@@ -91,6 +92,7 @@ class UserController extends AbstractController
         ]);
 
     }
+
     /**
      * @Route("/admin/certificat/demande", name="demande")
      */
@@ -115,9 +117,24 @@ class UserController extends AbstractController
             ->getRepository(Etudiant::class)
             ->certificat($id);
         // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('user/dompdf.html.twig', [
-            'title' => "Certificat de scolarite",'etudiants' => $etudiants
-        ]);
+        $certificat = $this->getDoctrine()->getRepository(Certificats::class)->find($id);
+        $categories = $certificat->getCategories();
+        if ($categories == 'attestation de scolarité'){
+            $html = $this->renderView('user/attestation de scolarité.html.twig', [
+                'title' => "Certificat de scolarite",'etudiants' => $etudiants
+            ]);
+        }
+        if ($categories == 'relevé de note'){
+            $html = $this->renderView('user/relevé de note.html.twig', [
+                'title' => "Certificat de scolarite",'etudiants' => $etudiants
+            ]);
+        }
+        if ($categories == 'certificats de stage'){
+            $html = $this->renderView('user/certificats de stage.html.twig', [
+                'title' => "Certificat de scolarite",'etudiants' => $etudiants
+            ]);
+        }
+
 
         // Load HTML to Dompdf
         $dompdf->loadHtml($html);

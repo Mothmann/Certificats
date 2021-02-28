@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Limite{% endblock %}
+
+{% block body %}
+<style>
+    .create{
+        float: right;
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+</style>
+    {% if limits %}
+        <table id="limit" class="table table-striped">
+            <thead>
+            <tr>
+                <th>id de l'etudiant</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for limit in limits %}
+                <tr>
+                    <td>{{ limit.user }}</td>
+                    <td>
+                        <a href="/admin/limit/{{limit.id}}"
+                           class="btn shadow-1 rounded-1 blue dark">Show</a>
+                        <a href="/admin/modifier/limit/{{limit.id}}"
+                           class="btn shadow-1 rounded-1 light">Edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="/register/ajouter/limit" class="btn shadow-1 rounded-1 light create">Create</a>
+    {% else %}
+        <p>Aucune limite</p>
+        <a href="/register/ajouter/limit" class="btn shadow-1 rounded-1 light create">Create</a>
+    {% endif %}
+{% endblock %}
+
