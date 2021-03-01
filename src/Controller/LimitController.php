@@ -23,7 +23,7 @@ class LimitController extends AbstractController
     }
 
     /**
-     * @Route("/register/ajouter/limit", name="ajout_limit")
+     * @Route("/admin/ajouter/limit", name="ajout_limit")
      */
 
     public function ajouterLimit(Request $request): Response

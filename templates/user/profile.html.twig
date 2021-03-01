@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+<style>
+    .create{
+        float: right;
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+</style>
+    {% for etudiant in etudiants %}
+    <h1>
+        Bonjour, {{ etudiant.prenom }}
+    </h1>
+    <ul>
+        <li>ID : {{ etudiant.id }}</li>
+        <li>Nom : {{ etudiant.nom }}</li>
+        <li>Prenom : {{ etudiant.prenom }}</li>
+        <li>Sexe : {{ etudiant.sexe }}</li>
+        <li>date de naissance : {{ etudiant.date_naissance|date("d-m-Y")  }}</li>
+        <li>filiere : {{ etudiant.libelle }}</li>
+    </ul>
+    {% endfor %}
+{% endblock %}
+

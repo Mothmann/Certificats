@@ -47,7 +47,7 @@ class LimitRepository extends ServiceEntityRepository
         ;
     }
     */
-    /*public function scolarite(int $id): int
+    public function scolarite(int $id): int
     {
         $entityManager = $this->getEntityManager();
         $sql = $entityManager->createQuery('UPDATE App\Entity\Limit li
@@ -70,5 +70,5 @@ class LimitRepository extends ServiceEntityRepository
         SET li.rel_note=li.rel_note-1
         WHERE li.user=:id')->setParameter('id',$id);
         return $sql->getResult();
-    }*/
+    }
 }

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Note{% endblock %}
+
+{% block body %}
+<style>
+    .create{
+        float: right;
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+</style>
+    {% if notes %}
+        <table id="notes" class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID de l'etudiant</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for note in notes %}
+                <tr>
+                    <td>{{ note.user }}</td>
+                    <td>
+                        <a href="/admin/note/{{note.id}}"
+                           class="btn shadow-1 rounded-1 blue dark">Show</a>
+                        <a href="/admin/modifier/note/{{note.id}}"
+                           class="btn shadow-1 rounded-1 light">Edit</a>
+                        <a href="/admin/note/delete/{{note.id}}"
+                           class="btn shadow-1 rounded-1 blue red">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="/admin/ajouter/note" class="btn shadow-1 rounded-1 light create">Create</a>
+    {% else %}
+        <p>Aucune Note</p>
+        <a href="/admin/ajouter/note" class="btn shadow-1 rounded-1 light create">Create</a>
+    {% endif %}
+{% endblock %}
+

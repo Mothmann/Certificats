@@ -6,8 +6,11 @@ use App\Entity\Etudiant;
 use App\Entity\Certificats;
 use App\Entity\Limit;
 
+use App\Entity\Note;
+use App\Entity\Stage;
 use App\Entity\User;
 use App\Form\CertificatsType;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,42 +30,16 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
         ]);
     }
+
     /**
-     * @Route("/profile, name="user_profile")
+     * @Route("/profile", name="user_profile")
+     */
+    public function userProfile(): Response {
+        $id = $this->getUser();
+        $profile = $this->getDoctrine()->getRepository(User::class)->profile($id);
+        return $this->render('user/profile.html.twig',['etudiants'=> $profile]);
 
-    public function userProfile(int $etudiant): Response {
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQueryBuilder();
-
-        $id = $this->getUser()->getId();
-        $etudiant = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($etudiant);
-
-        if ($etudiant == null){
-            return $this->redirectToRoute('admin_profile');
-        }
-        else {
-            $query = $em-
-
-        }
-        return new Response("nom est ....");
-
-    } */
-    /**
-     * @Route("/admin/profile/{id}", name="admin_profile")
-
-
-    public function adminProfile(int $administrateur): Response {
-        $id = $this->getUser()->getId();
-        $administrateur = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($administrateur);
-
-
-
-        return new Response("nom est ....");
-    } */
+    }
     /**
      * @Route("/certificat/create", name="certificat_create")
      */
@@ -78,6 +55,13 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $categories = $form["categories"]->getData();
+            /*if ($categories == 'attestation de scolarité'){
+
+                $limit = $this->getDoctrine()
+                    ->getRepository(Limit::class)
+                    ->scolarite((int)$id);
+            }*/
             $certificat->setUser($this->getUser());
             $certificat->setStatus('en cours');
 
@@ -113,25 +97,42 @@ class UserController extends AbstractController
         $pdfOptions->set('defaultFont', 'Arial');
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
-        $etudiants = $this->getDoctrine()
-            ->getRepository(Etudiant::class)
-            ->certificat($id);
         // Retrieve the HTML generated in our twig file
         $certificat = $this->getDoctrine()->getRepository(Certificats::class)->find($id);
         $categories = $certificat->getCategories();
         if ($categories == 'attestation de scolarité'){
+            $etudiants = $this->getDoctrine()
+                ->getRepository(Etudiant::class)
+                ->certificat($id);
             $html = $this->renderView('user/attestation de scolarité.html.twig', [
                 'title' => "Certificat de scolarite",'etudiants' => $etudiants
             ]);
         }
         if ($categories == 'relevé de note'){
+            $note = $this->getDoctrine()
+                ->getRepository(Certificats::class)
+                ->find($id);
+            $userid = $note->getUser();
+            $nom = $this->getDoctrine()
+                ->getRepository(Etudiant::class)
+                ->nom($userid);
+            $etudiants = $this->getDoctrine()
+                ->getRepository(Etudiant::class)
+                ->note($userid);
             $html = $this->renderView('user/relevé de note.html.twig', [
-                'title' => "Certificat de scolarite",'etudiants' => $etudiants
+                'title' => "Releve de note",'notes' => $etudiants,'noms'=> $nom
             ]);
         }
         if ($categories == 'certificats de stage'){
+            $stage = $this->getDoctrine()
+                ->getRepository(Certificats::class)
+                ->find($id);
+            $userid = $stage->getUser();
+            $etudiants = $this->getDoctrine()
+                ->getRepository(Etudiant::class)
+                ->stage($userid);
             $html = $this->renderView('user/certificats de stage.html.twig', [
-                'title' => "Certificat de scolarite",'etudiants' => $etudiants
+                'title' => "convention de stage",'stages' => $etudiants
             ]);
         }
 

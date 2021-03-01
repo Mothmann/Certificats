@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stage{% endblock %}
+
+{% block body %}
+<style>
+    .create{
+        float: right;
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+</style>
+    {% if stages %}
+        <table id="stage" class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID de l'etudiant</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for stage in stages %}
+                <tr>
+                    <td>{{ stage.user }}</td>
+                    <td>
+                        <a href="/admin/stage/{{stage.id}}"
+                           class="btn shadow-1 rounded-1 blue dark">Show</a>
+                        <a href="/admin/modifier/stage/{{stage.id}}"
+                           class="btn shadow-1 rounded-1 light">Edit</a>
+                        <a href="/admin/stage/delete/{{stage.id}}"
+                           class="btn shadow-1 rounded-1 blue red">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="/admin/ajouter/stage" class="btn shadow-1 rounded-1 light create">Create</a>
+    {% else %}
+        <p>Aucun stage</p>
+        <a href="/admin/ajouter/stage" class="btn shadow-1 rounded-1 light create">Create</a>
+    {% endif %}
+{% endblock %}
+

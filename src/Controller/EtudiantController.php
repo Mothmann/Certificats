@@ -24,7 +24,7 @@ class EtudiantController extends AbstractController
     }
 
     /**
-     * @Route("/register/ajouter/etudiant", name="ajout_etudiant")
+     * @Route("/admin/ajouter/etudiant", name="ajout_etudiant")
      */
 
     public function ajouterEtudiant(Request $request): Response

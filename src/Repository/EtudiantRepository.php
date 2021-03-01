@@ -58,4 +58,37 @@ class EtudiantRepository extends ServiceEntityRepository
         )->setParameter('id',$id);
         return $query->getResult();
     }
+    public function note($userid): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT m.libelle,no.note
+             FROM App\Entity\Note no INNER JOIN App\Entity\Module m WITH no.module=m.id INNER JOIN App\Entity\User u WITH no.user=u.id
+             WHERE no.user = :id'
+        )->setParameter('id',$userid);
+        return $query->getResult();
+    }
+    public function stage($userid): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT et.nom,et.prenom,s.entreprise,s.responsable_de_stage,s.ville
+             FROM App\Entity\Stage s INNER JOIN App\Entity\user u WITH s.user=u.id INNER JOIN App\Entity\Etudiant et WITH u.etudiant=et.id 
+             WHERE s.user = :id'
+        )->setParameter('id',$userid);
+        return $query->getResult();
+    }
+    public function nom($idd): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT et.nom,et.prenom
+              FROM App\Entity\User u INNER JOIN App\Entity\Etudiant et WITH u.etudiant=et.id
+             WHERE u.id = :id'
+        )->setParameter('id',$idd);
+        return $query->getResult();
+    }
 }
