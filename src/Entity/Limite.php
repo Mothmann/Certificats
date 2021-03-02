@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\LimitRepository;
+use App\Repository\LimiteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=LimitRepository::class)
- * @ORM\Table(name="`limit`")
+ * @ORM\Entity(repositoryClass=LimiteRepository::class)
+ * @ORM\Table(name="`limite`")
  */
-class Limit
+class Limite
 {
     /**
      * @ORM\Id

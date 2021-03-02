@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Etudiant;
 use App\Entity\Certificats;
-use App\Entity\Limit;
+use App\Entity\Limite;
 
 use App\Entity\Note;
 use App\Entity\Stage;
@@ -56,12 +56,47 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $categories = $form["categories"]->getData();
-            /*if ($categories == 'attestation de scolarité'){
+            $check = $this->getDoctrine()->getRepository(Limite::class)->GetUserId((int)$id);
+            if ($categories == 'attestation de scolarité'){
+                $test = $check->getAttScolarite();
+                if ($test = 0) {
+                    throw $this->createNotFoundException(
+                        'vous ne pouvez plus demander de certificat'
+                    );
+                }
+                else {
+                    $limit = $this->getDoctrine()
+                        ->getRepository(Limite::class)
+                        ->scolarite((int)$id);
+                }
+            }
+            if ($categories == 'relevé de note') {
+                $test = $check->getAttScolarite();
+                if ($test = 0) {
+                    throw $this->createNotFoundException(
+                        'vous ne pouvez plus demander de certificat'
+                    );
+                }
+                else {
+                    $limit = $this->getDoctrine()
+                        ->getRepository(Limite::class)
+                        ->note((int)$id);
+                }
+            }
+            if ($categories == 'certificats de stage'){
+                $test = $check->getAttScolarite();
+                if ($test = 0){
+                    throw $this->createNotFoundException(
+                        'vous ne pouvez plus demander de certificat'
+                    );
+                }
+                else {
+                    $limit = $this->getDoctrine()
+                        ->getRepository(Limite::class)
+                        ->stage((int)$id);
+                }
+            }
 
-                $limit = $this->getDoctrine()
-                    ->getRepository(Limit::class)
-                    ->scolarite((int)$id);
-            }*/
             $certificat->setUser($this->getUser());
             $certificat->setStatus('en cours');
 

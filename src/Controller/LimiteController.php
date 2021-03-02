@@ -2,23 +2,23 @@
 
 namespace App\Controller;
 
-use App\Entity\Limit;
-use App\Form\LimitType;
-use App\Form\UpdateLimitType;
+use App\Entity\Limite;
+use App\Form\LimiteType;
+use App\Form\UpdateLimiteType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LimitController extends AbstractController
+class LimiteController extends AbstractController
 {
 
     /**
-     * @Route("/admin/limit", name="limit")
+     * @Route("/admin/limit", name="limite")
      */
     public function index(): Response
     {
-        $limit = $this->getDoctrine()->getRepository(Limit::class)->findAll();
+        $limit = $this->getDoctrine()->getRepository(Limite::class)->findAll();
         return $this->render('limit/crudlimit.html.twig', array('limits' => $limit));
     }
 
@@ -28,8 +28,8 @@ class LimitController extends AbstractController
 
     public function ajouterLimit(Request $request): Response
     {
-        $limit = new Limit();
-        $form = $this->createForm(LimitType::class, $limit);
+        $limit = new Limite();
+        $form = $this->createForm(LimiteType::class, $limit);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
@@ -50,7 +50,7 @@ class LimitController extends AbstractController
     public function showLimit(int $id): Response
     {
         $limit = $this->getDoctrine()
-            ->getRepository(Limit::class)
+            ->getRepository(Limite::class)
             ->find($id);
 
         if(!$limit) {
@@ -67,9 +67,9 @@ class LimitController extends AbstractController
 
     public function modifierLimit(Request $request, $id): Response
     {
-        $limit = new Limit();
-        $limit = $this->getDoctrine()->getRepository(Limit::class)->find($id);
-        $form = $this->createForm(UpdateLimitType::class, $limit);
+        $limit = new Limite();
+        $limit = $this->getDoctrine()->getRepository(Limite::class)->find($id);
+        $form = $this->createForm(UpdateLimiteType::class, $limit);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
