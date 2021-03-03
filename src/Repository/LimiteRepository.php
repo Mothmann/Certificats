@@ -47,14 +47,6 @@ class LimiteRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function GetUserId($id): array
-    {
-        $entityManager = $this->getEntityManager();
-        $sql = $entityManager->createQuery('SELECT l
-        FROM App\Entity\Limite l
-        WHERE l.user=:id')->setParameter('id',$id);
-        return $sql->getResult();
-    }
     public function scolarite($id): int
     {
         $entityManager = $this->getEntityManager();
@@ -63,7 +55,7 @@ class LimiteRepository extends ServiceEntityRepository
         WHERE li.user=:id')->setParameter('id',$id);
         return $sql->getResult();
     }
-    public function stage(int $id): int
+    public function stage($id): int
     {
         $entityManager = $this->getEntityManager();
         $sql = $entityManager->createQuery('UPDATE App\Entity\Limite li
@@ -71,7 +63,7 @@ class LimiteRepository extends ServiceEntityRepository
         WHERE li.user=:id')->setParameter('id',$id);
         return $sql->getResult();
     }
-    public function note(int $id): int
+    public function note($id): int
     {
         $entityManager = $this->getEntityManager();
         $sql = $entityManager->createQuery('UPDATE App\Entity\Limite li

@@ -47,6 +47,7 @@ class UserController extends AbstractController
     public function createCertificats(Request $request): Response
     {
         $id = $this->getUser();
+        $entityManager = $this->getDoctrine()->getManager();
         $demande = $this->getDoctrine()
             ->getRepository(User::class)
             ->mesdemandes((string)$id);
@@ -56,10 +57,11 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $categories = $form["categories"]->getData();
-            $check = $this->getDoctrine()->getRepository(Limite::class)->GetUserId($id);
+            $check = $entityManager->getRepository(Limite::class)->findOneBy(array('user'=> $id));
             if ($categories == 'attestation de scolarité'){
                 $test = $check->getAttScolarite();
-                if ($test = 0) {
+                if ($test == 0)
+                {
                     throw $this->createNotFoundException(
                         'vous ne pouvez plus demander de certificat'
                     );
@@ -67,12 +69,13 @@ class UserController extends AbstractController
                 else {
                     $limit = $this->getDoctrine()
                         ->getRepository(Limite::class)
-                        ->scolarite((int)$id);
+                        ->scolarite($id);
                 }
             }
             if ($categories == 'relevé de note') {
                 $test = $check->getAttScolarite();
-                if ($test = 0) {
+                if ($test == 0)
+                {
                     throw $this->createNotFoundException(
                         'vous ne pouvez plus demander de certificat'
                     );
@@ -80,12 +83,13 @@ class UserController extends AbstractController
                 else {
                     $limit = $this->getDoctrine()
                         ->getRepository(Limite::class)
-                        ->note((int)$id);
+                        ->note($id);
                 }
             }
             if ($categories == 'certificats de stage'){
                 $test = $check->getAttScolarite();
-                if ($test = 0){
+                if ($test == 0)
+                {
                     throw $this->createNotFoundException(
                         'vous ne pouvez plus demander de certificat'
                     );
@@ -93,14 +97,13 @@ class UserController extends AbstractController
                 else {
                     $limit = $this->getDoctrine()
                         ->getRepository(Limite::class)
-                        ->stage((int)$id);
+                        ->stage($id);
                 }
             }
 
             $certificat->setUser($this->getUser());
             $certificat->setStatus('en cours');
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($certificat);
             $entityManager->flush();
 
@@ -185,15 +188,16 @@ class UserController extends AbstractController
         $output = $dompdf->output();
 
         // In this case, we want to write the file in the public directory
-        $publicDirectory = $this->getParameter('kernel.project_dir') . '/private';
+        $publicDirectory = $this->getParameter('kernel.project_dir') . '/pdf';
         $now = new \DateTime('now');
         $today = $now->format('Y-m-d');
 
         $fs=new Filesystem();
         $fs->mkdir($publicDirectory.'/'. $today);
         $directory = $publicDirectory.'/'. $today;
+        $userid = $this->getUser();
         // e.g /var/www/project/public/mypdf.pdf
-        $pdfFilepath = $directory. '/' .'mypdf.pdf';
+        $pdfFilepath = $directory. '/'. $userid.' - '.$categories.'.pdf';
             // Write file to the desired path
         file_put_contents($pdfFilepath, $output);
         $this->getDoctrine()
