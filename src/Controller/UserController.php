@@ -202,8 +202,7 @@ class UserController extends AbstractController
         file_put_contents($pdfFilepath, $output);
         $this->getDoctrine()
             ->getRepository(User::class)
-            ->active($id);
-
+            ->active($id,$pdfFilepath);
 
         // Send some text response
         return new Response("The PDF file has been succesfully generated !");
@@ -217,5 +216,22 @@ class UserController extends AbstractController
             ->getRepository(User::class)
             ->rejeter($id);
         return new Response("la demande a ete rejete");
+    }
+    /**
+     * @Route("/certificat/{id}", name="showpdf")
+     */
+    public function showpdf(int $id){
+        $entityManager = $this->getDoctrine()->getManager();
+        $pdf = $entityManager->getRepository(Certificats::class)->find($id);
+        $statut = $pdf->getCategories();
+        if ($statut === 'terminer'){
+            $url = $pdf->getPdfpath();
+            return $this->redirect($url);
+        }
+       else {
+           throw $this->createNotFoundException(
+               "votre demande n'a pas encore ete accepte"
+           );
+       }
     }
 }

@@ -42,6 +42,11 @@ class Certificats
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $pdfpath;
+
 
     public function getId(): ?int
     {
@@ -87,6 +92,18 @@ class Certificats
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getPdfpath(): ?string
+    {
+        return $this->pdfpath;
+    }
+
+    public function setPdfpath(?string $pdfpath): self
+    {
+        $this->pdfpath = $pdfpath;
 
         return $this;
     }

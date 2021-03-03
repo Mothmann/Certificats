@@ -23,6 +23,7 @@
             <td>Type</td>
             <td>Date</td>
             <td>Statut</td>
+            <td>Obtenir</td>
         </tr>
         {% for demande in demandes %}
             <tr>
@@ -37,6 +38,7 @@
                 {% elseif (demande.status == 'rejete') %}
                     <td class="rejected">{{ demande.status }}</td>
                  {% endif %}
+                <td><a class="btn shadow-1 rounded-1 blue" href="{{ path('showpdf', { 'id': demande.id }) }}">Voir</a></td>
             </tr>
         {% endfor %}
     </table>

@@ -47,4 +47,14 @@ class CertificatsRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function checkpdf(int $id): array
+
+    {   $entityManager = $this->getEntityManager();
+
+        $sql =$entityManager->createQuery( 'SELECT ce.status
+            FROM App\Entity\Certificats ce
+            WHERE ce.user= :id')->setParameter('id',$id) ;
+        
+        return $sql->getResult();
+    }
 }
