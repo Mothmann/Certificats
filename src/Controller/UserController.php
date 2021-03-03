@@ -56,7 +56,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $categories = $form["categories"]->getData();
-            $check = $this->getDoctrine()->getRepository(Limite::class)->GetUserId((int)$id);
+            $check = $this->getDoctrine()->getRepository(Limite::class)->GetUserId($id);
             if ($categories == 'attestation de scolarité'){
                 $test = $check->getAttScolarite();
                 if ($test = 0) {
