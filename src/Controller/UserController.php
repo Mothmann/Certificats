@@ -61,6 +61,7 @@ class UserController extends AbstractController
             $check = $entityManager->getRepository(Limite::class)->findOneBy(array('user'=> $id));
             if ($categories == 'attestation de scolarité'){
                 $test = $check->getAttScolarite();
+                print($test);
                 if ($test == 0)
                 {
                     throw $this->createNotFoundException(
@@ -68,13 +69,13 @@ class UserController extends AbstractController
                     );
                 }
                 else {
-                    $limit = $this->getDoctrine()
+                    $this->getDoctrine()
                         ->getRepository(Limite::class)
                         ->scolarite($id);
                 }
             }
             if ($categories == 'relevé de note') {
-                $test = $check->getAttScolarite();
+                $test = $check->getRelNote();
                 if ($test == 0)
                 {
                     throw $this->createNotFoundException(
@@ -82,21 +83,21 @@ class UserController extends AbstractController
                     );
                 }
                 else {
-                    $limit = $this->getDoctrine()
+                    $this->getDoctrine()
                         ->getRepository(Limite::class)
                         ->note($id);
                 }
             }
             if ($categories == 'certificats de stage'){
-                $test = $check->getAttScolarite();
-                if ($test == 0)
+                $test = $check->getConvStage();
+                if ($test === 0)
                 {
                     throw $this->createNotFoundException(
                         'vous ne pouvez plus demander de certificat'
                     );
                 }
                 else {
-                    $limit = $this->getDoctrine()
+                    $this->getDoctrine()
                         ->getRepository(Limite::class)
                         ->stage($id);
                 }
@@ -131,12 +132,9 @@ class UserController extends AbstractController
      */
     public function pdf(int $id): Response
     {
-        // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
-        // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
-        // Retrieve the HTML generated in our twig file
         $certificat = $this->getDoctrine()->getRepository(Certificats::class)->find($id);
         $categories = $certificat->getCategories();
         if ($categories == 'attestation de scolarité'){
@@ -175,20 +173,14 @@ class UserController extends AbstractController
             ]);
         }
 
-
-        // Load HTML to Dompdf
         $dompdf->loadHtml($html);
 
-        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
         $dompdf->setPaper('A4', 'portrait');
 
-        // Render the HTML as PDF
         $dompdf->render();
 
-        // Store PDF Binary Data
         $output = $dompdf->output();
 
-        // In this case, we want to write the file in the public directory
         $publicDirectory = $this->getParameter('kernel.project_dir') . '/pdf';
         $now = new \DateTime('now');
         $today = $now->format('Y-m-d');
@@ -197,17 +189,13 @@ class UserController extends AbstractController
         $fs->mkdir($publicDirectory.'/'. $today);
         $directory = $publicDirectory.'/'. $today;
         $userid = $this->getUser();
-        // e.g /var/www/project/public/mypdf.pdf
 
         $pdfFilepath = $directory. '/'. $userid.' - '.$categories.'.pdf';
-        $pdfFilepath = $directory. '/'. $userid.' - '.$categories.'.pdf';
-            // Write file to the desired path
         file_put_contents($pdfFilepath, $output);
         $this->getDoctrine()
             ->getRepository(User::class)
             ->active($id,$pdfFilepath);
 
-        // Send some text response
         return new Response("The PDF file has been succesfully generated !");
     }
     /**
