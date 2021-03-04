@@ -107,13 +107,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         return $sql->getResult();
     }
-    public function rejeter(int $id): string
+    public function rejeter($id,$userid): string
     {
         $entityManager = $this->getEntityManager();
 
         $sql =$entityManager->createQuery( 'UPDATE App\Entity\Certificats ce 
         SET ce.status=:status
-        WHERE ce.id=:id')->setParameter('id',$id)->setParameter('status','rejete') ;
+        WHERE ce.user=:userid and ce.id=:id')->setParameter('userid',$userid)->setParameter('id',$id)->setParameter('status','rejete') ;
 
         return $sql->getResult();
     }

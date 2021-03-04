@@ -7,6 +7,7 @@ use App\Entity\Certificats;
 use App\Entity\Limite;
 
 use App\Entity\Note;
+use App\Entity\Notification;
 use App\Entity\Stage;
 use App\Entity\User;
 use App\Form\CertificatsType;
@@ -196,6 +197,15 @@ class UserController extends AbstractController
             ->getRepository(User::class)
             ->active($id,$pdfFilepath);
 
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $notification = new Notification();
+        $notification->setUser($userid);
+        $notification->setMessage('votre '.$categories.' a ete valide avec succes le '.$today);
+
+        $entityManager->persist($notification);
+        $entityManager->flush();
+
         return new Response("The PDF file has been succesfully generated !");
     }
     /**
@@ -203,9 +213,22 @@ class UserController extends AbstractController
      */
     public function rejeter(int $id): Response
     {
+        $cert = $this->getDoctrine()->getRepository(Certificats::class)->find($id);
+        $userid = $cert->getUser();
         $this->getDoctrine()
             ->getRepository(User::class)
-            ->rejeter($id);
+            ->rejeter($id,$userid);
+        $categories = $cert->getCategories();
+        $now = new \DateTime('now');
+        $today = $now->format('Y-m-d');
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $notification = new Notification();
+        $notification->setUser($userid);
+        $notification->setMessage('votre '.$categories.' a ete rejete le '.$today);
+
+        $entityManager->persist($notification);
+        $entityManager->flush();
         return new Response("la demande a ete rejete");
     }
     /**
