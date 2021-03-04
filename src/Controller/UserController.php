@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class UserController extends AbstractController
 {
@@ -197,6 +198,8 @@ class UserController extends AbstractController
         $directory = $publicDirectory.'/'. $today;
         $userid = $this->getUser();
         // e.g /var/www/project/public/mypdf.pdf
+
+        $pdfFilepath = $directory. '/'. $userid.' - '.$categories.'.pdf';
         $pdfFilepath = $directory. '/'. $userid.' - '.$categories.'.pdf';
             // Write file to the desired path
         file_put_contents($pdfFilepath, $output);
@@ -223,15 +226,8 @@ class UserController extends AbstractController
     public function showpdf(int $id){
         $entityManager = $this->getDoctrine()->getManager();
         $pdf = $entityManager->getRepository(Certificats::class)->find($id);
-        $statut = $pdf->getCategories();
-        if ($statut === 'terminer'){
-            $url = $pdf->getPdfpath();
-            return $this->redirect($url);
-        }
-       else {
-           throw $this->createNotFoundException(
-               "votre demande n'a pas encore ete accepte"
-           );
-       }
+        $url = $pdf->getPdfpath();
+        return new BinaryFileResponse($url);
+
     }
 }
