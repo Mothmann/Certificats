@@ -3,6 +3,19 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+    <style>
+        #login{
+            text-align: center;
+            width: 25%;
+            margin: auto;
+        }
+        #login div{
+            margin: 2rem;
+        }
+        #login button{
+            margin: auto;
+        }
+    </style>
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -13,16 +26,16 @@
             You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
     {% endif %}
+        <div id="login">
+        <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
+        <div><label for="inputEmail">Email</label>
+        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus></div>
+        <div><label for="inputPassword">Mot de passe</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" required></div>
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
 
     {#
         Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
@@ -34,10 +47,12 @@
             </label>
         </div>
     #}
-
-    <button class="btn btn-lg btn-primary" type="submit">
+            <button class="btn btn-lg btn-primary" type="submit">
         Sign in
-    </button>
+            </button>
+            </form>
+
+    <p><a href = "{{ path('app_forgot_password_request')}}"> Mot de passse oublie</a></p>
+    </div>
 </form>
-<p><a href = "{{ path('app_forgot_password_request')}}"> Mot de passse oublie</p>	
 {% endblock %}

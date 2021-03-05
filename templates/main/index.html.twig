@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'main/basehome.html.twig' %}
 
 {% block title %}Accueil{% endblock %}
 
@@ -48,15 +48,22 @@
     }
 
 
-    #foot{
+    #bottom{
         margin-top: 10%;
-        padding-left: 5%;
-        background-color: rgba(176,65,62,0.5) !important;
+        background-color: rgba(234, 73, 69, 0.5) !important;
+        overflow: auto;
+        display: flex;
+        justify-content: space-between;
+        height: 500px;
+    }
+    #bottom a:hover{
+        color: rgb(245, 237, 250);
     }
 
     .left{
-        float: left;
-        padding-right: 20px;
+        padding-left: 100px;
+        padding-right: 100px;
+
     }
 
 </style>
@@ -76,33 +83,28 @@
             sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
             Aldus PageMaker including versions of Lorem Ipsum.</p>
     </div>
-    <div id="foot">
+    <div id="bottom">
         <div class="left">
             <h2>Certificats</h2>
-                <div class="left">
-                    <h3> What are the certifications?</h3>
-                    <p>
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    </p>
-                    <h3>Subscribe to us</h3>
-                    <label>
-                        <input type="text" placeholder="Type your e-mail address">
-                    </label>
-                </div>
-                        <div class="left" >
-                            <h3>Important links</h3>
-                            <a href="#">Hello I'm the first link</a> <br>
-                            <a href="#">Salut je suis le deuxième </a> <br>
-                            <a href="#">I'm le third One  </a> <br>
-                            <a href="#">I'm le quatrième</a>
-                        </div>
-                    <div class="left">
-                        <h3>Contact Us</h3>
-                        <a href="#">E-mail@e-mail.com</a>
-                        <a href="#">Phone number: +212600000000</a>
-                        <a href="#">Adress rue adress ville address </a>
-                    </div>
+            <h3> What are the certifications?</h3>
+            <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+            <h3>Subscribe to us</h3>
+            <label><input type="text" placeholder="Type your e-mail address"></label>
+        </div>
+
+        <div class="left" >
+            <h3>Important links</h3>
+            <a href="#">Hello I'm the first link</a> <br>
+            <a href="#">Salut je suis le deuxième </a> <br>
+            <a href="#">I'm le third One  </a> <br>
+            <a href="#">I'm le quatrième</a>
+        </div>
+
+        <div class="left">
+            <h3>Contact Us</h3>
+            <a href="#">E-mail@e-mail.com</a><br>
+            <a href="#">Phone number: +212600000000</a><br>
+            <a href="#">Adress rue adress ville address </a>
         </div>
     </div>
 
