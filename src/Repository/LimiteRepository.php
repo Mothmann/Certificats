@@ -10,7 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Limite|null find($id, $lockMode = null, $lockVersion = null)
  * @method Limite|null findOneBy(array $criteria, array $orderBy = null)
  * @method Limite[]    findAll()
- * @method Limite[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Limite[]    findBy(array $criteria, array $orderBy = null, $limite = null, $offset = null)
  */
 class LimiteRepository extends ServiceEntityRepository
 {

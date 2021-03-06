@@ -1,21 +1,34 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseadmin.html.twig' %}
 
 {% block title %}Register{% endblock %}
 
 {% block body %}
+    <style>
+        #login{
+            text-align: center;
+            width: 25%;
+            margin: auto;
+        }
+        #login div{
+            margin: 2rem;
+        }
+        #login button{
+            margin: auto;
+        }
+    </style>
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-
+    <div id="login">
     <h1>Register</h1>
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
+        <div>{{ form_row(registrationForm.email) }}</div>
+        <div>{{ form_row(registrationForm.plainPassword, {
             label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        }) }}</div>
+        <div>{{ form_row(registrationForm.agreeTerms) }}</div>
 
-        <button type="submit" class="btn">Register</button>
+       <div> <button type="submit" class="btn">Register</button></div></div>
     {{ form_end(registrationForm) }}
 {% endblock %}

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @method Notification|null find($id, $lockMode = null, $lockVersion = null)
  * @method Notification|null findOneBy(array $criteria, array $orderBy = null)
  * @method Notification[]    findAll()
- * @method Notification[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Notification[]    findBy(array $criteria, array $orderBy = null, $limite = null, $offset = null)
  */
 class NotificationRepository extends ServiceEntityRepository
 {

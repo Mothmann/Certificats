@@ -20,13 +20,13 @@ final class Version20210228124423 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE `limit` (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, att_scolarite SMALLINT NOT NULL, conv_stage SMALLINT NOT NULL, rel_note SMALLINT NOT NULL, UNIQUE INDEX UNIQ_7F96E860A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE `limit` ADD CONSTRAINT FK_7F96E860A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
+        $this->addSql('CREATE TABLE `limite` (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, att_scolarite SMALLINT NOT NULL, conv_stage SMALLINT NOT NULL, rel_note SMALLINT NOT NULL, UNIQUE INDEX UNIQ_7F96E860A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE `limite` ADD CONSTRAINT FK_7F96E860A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE `limit`');
+        $this->addSql('DROP TABLE `limite`');
     }
 }

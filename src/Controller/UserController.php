@@ -174,7 +174,7 @@ class UserController extends AbstractController
             $entityManager->persist($certificat);
             $entityManager->flush();
 
-            return $this->redirectToRoute('user');
+            return $this->redirectToRoute('app_home');
         }
         return $this->render('user/create_certificat.html.twig', [
             'form' => $form->createView(), 'demandes' => $demande
@@ -264,6 +264,8 @@ class UserController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $notification = new Notification();
+        $cert = $this->getDoctrine()->getRepository(Certificats::class)->find($id);
+        $userid = $cert->getUser();
         $notification->setUser($userid);
         $notification->setMessage('votre '.$categories.' a ete valide avec succes le '.$today);
 

@@ -10,7 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Stage|null find($id, $lockMode = null, $lockVersion = null)
  * @method Stage|null findOneBy(array $criteria, array $orderBy = null)
  * @method Stage[]    findAll()
- * @method Stage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Stage[]    findBy(array $criteria, array $orderBy = null, $limite = null, $offset = null)
  */
 class StageRepository extends ServiceEntityRepository
 {

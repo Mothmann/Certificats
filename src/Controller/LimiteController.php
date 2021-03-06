@@ -14,19 +14,19 @@ class LimiteController extends AbstractController
 {
 
     /**
-     * @Route("/admin/limit", name="limite")
+     * @Route("/admin/limite", name="limite")
      */
     public function index(): Response
     {
         $limit = $this->getDoctrine()->getRepository(Limite::class)->findAll();
-        return $this->render('limit/crudlimit.html.twig', array('limits' => $limit));
+        return $this->render('limite/crudlimite.html.twig', array('limits' => $limit));
     }
 
     /**
-     * @Route("/admin/ajouter/limit", name="ajout_limit")
+     * @Route("/admin/ajouter/limite", name="ajout_limite")
      */
 
-    public function ajouterLimit(Request $request): Response
+    public function ajouterLimite(Request $request): Response
     {
         $limit = new Limite();
         $form = $this->createForm(LimiteType::class, $limit);
@@ -37,17 +37,17 @@ class LimiteController extends AbstractController
             $em->persist($limit);
             $em->flush();
 
-            return $this->redirectToRoute('limit');
+            return $this->redirectToRoute('limite');
         }
-        return $this->render('limit/creatlimit.html.twig', [
+        return $this->render('limite/createlimite.html.twig', [
             'form' => $form->createView(), 'limits' => $limit]);
     }
 
     /**
-     * @Route("/admin/limit/{id}", name="read_limit")
+     * @Route("/admin/limite/{id}", name="read_limit")
      */
 
-    public function showLimit(int $id): Response
+    public function showLimite(int $id): Response
     {
         $limit = $this->getDoctrine()
             ->getRepository(Limite::class)
@@ -58,11 +58,11 @@ class LimiteController extends AbstractController
                 "Aucun limite existe avec l'id ".$id
             );
         }
-        return new Response("Nombre de limit est: ".$limit->getAttScolarite().' attestation de scolarite '.$limit->getConvStage(). ' convention de stage'.' et '.$limit->getRelNote(). ' releve de note');
+        return new Response("Nombre de limite est: ".$limit->getAttScolarite().' attestation de scolarite '.$limit->getConvStage(). ' convention de stage'.' et '.$limit->getRelNote(). ' releve de note');
     }
 
     /**
-     * @Route("/admin/modifier/limit/{id}", name="modifier_limit")
+     * @Route("/admin/modifier/limite/{id}", name="modifier_limit")
      */
 
     public function modifierLimit(Request $request, $id): Response
@@ -81,8 +81,9 @@ class LimiteController extends AbstractController
 
             return $this->redirectToRoute('app_home');
         }
-        return $this->render('limit/updatelimit.html.twig', [
+        return $this->render('limite/updatelimite.html.twig', [
             'form' => $form->createView(), 'limits' => $limit,
         ]);
     }
+
 }

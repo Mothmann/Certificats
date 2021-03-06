@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseadmin.html.twig' %}
 
 {% block title %}Limite{% endblock %}
 
@@ -23,19 +23,19 @@
                 <tr>
                     <td>{{ limit.user }}</td>
                     <td>
-                        <a href="/admin/limit/{{limit.id}}"
+                        <a href="/admin/limite/{{limit.id}}"
                            class="btn shadow-1 rounded-1 blue dark">Show</a>
-                        <a href="/admin/modifier/limit/{{limit.id}}"
+                        <a href="/admin/modifier/limite/{{limit.id}}"
                            class="btn shadow-1 rounded-1 light">Edit</a>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <a href="/admin/ajouter/limit" class="btn shadow-1 rounded-1 light create">Create</a>
+        <a href="/admin/ajouter/limite" class="btn shadow-1 rounded-1 light create">Create</a>
     {% else %}
         <p>Aucune limite</p>
-        <a href="/admin/ajouter/limit" class="btn shadow-1 rounded-1 light create">Create</a>
+        <a href="/admin/ajouter/limite" class="btn shadow-1 rounded-1 light create">Create</a>
     {% endif %}
 {% endblock %}
 

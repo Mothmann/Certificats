@@ -170,12 +170,6 @@ class User implements UserInterface
 
         return $this;
     }
-    private $security;
-
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
     public function getCurrentUser()
     {
         $user = $this->security->getUser();

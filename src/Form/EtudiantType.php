@@ -49,9 +49,6 @@ class EtudiantType extends AbstractType
             ->add('filiere', EntityType::class, [
                 'class' => Filiere::class
             ])
-            ->add('etudiant_id', EntityType::class, [
-                'class' => User::class
-            ])
             ->add('ajouter', SubmitType::class)
         ;
     }

@@ -10,7 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Filiere|null find($id, $lockMode = null, $lockVersion = null)
  * @method Filiere|null findOneBy(array $criteria, array $orderBy = null)
  * @method Filiere[]    findAll()
- * @method Filiere[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Filiere[]    findBy(array $criteria, array $orderBy = null, $limite = null, $offset = null)
  */
 class FiliereRepository extends ServiceEntityRepository
 {

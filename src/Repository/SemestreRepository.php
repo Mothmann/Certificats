@@ -10,7 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Semestre|null find($id, $lockMode = null, $lockVersion = null)
  * @method Semestre|null findOneBy(array $criteria, array $orderBy = null)
  * @method Semestre[]    findAll()
- * @method Semestre[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Semestre[]    findBy(array $criteria, array $orderBy = null, $limite = null, $offset = null)
  */
 class SemestreRepository extends ServiceEntityRepository
 {
