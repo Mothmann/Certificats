@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+<style>
+    .create{
+        float: right;
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+</style>
+    {% if users %}
+        <table id="user" class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID de l'utilisateur</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>
+                        <a href="/admin/user/{{user.id}}"
+                           class="btn shadow-1 rounded-1 blue dark">Show</a>
+                        <a href="/admin/modifier/user/{{user.id}}"
+                           class="btn shadow-1 rounded-1 light">Edit</a>
+                        <a href="/admin/user/delete/{{user.id}}"
+                           class="btn shadow-1 rounded-1 blue red">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
+

@@ -1,0 +1,47 @@
+{% extends 'baseadmin.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<style>
+    #links{
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px;
+    }
+    #links img{
+
+    }
+    #links h3{
+    }
+    .flex-item {
+        width: 30%;
+        flex-grow: 1;
+        min-height: 120px;
+        margin: 0 5px 10px;
+        justify-content: space-between;
+        text-align: center;
+    }
+</style>
+    <div id="links">
+        <div class="flex-item"><a href="{{ path('etudiant') }}"><img src="/pics/student.jpg" width="50%"></a>
+            <h3>Etudiants</h3></div>
+        <div class="flex-item"><a href="{{ path('administrateur') }}"><img src="/pics/administrateur.jpg" width="50%"></a>
+            <h3>Administrateur</h3></div>
+        <div class="flex-item"><a href="{{ path('user') }}"><img src="/pics/user.jpg" width="35%"></a>
+            <h3>lier un compte</h3></div>
+        <div class="flex-item"><a href="{{ path('note') }}"><img src="/pics/grades.jpg" width="50%"></a>
+            <h3>Notes</h3></div>
+        <div class="flex-item"><a href="{{ path('module') }}"><img src="/pics/module.jpg" width="50%"></a>
+            <h3>Modules</h3></div>
+        <div class="flex-item"><a href="{{ path('filiere') }}"><img src="/pics/filiere.jpg" width="50%"></a>
+            <h3>Filiere</h3></div>
+        <div class="flex-item"><a href="{{ path('limite') }}"><img src="/pics/limit.jpg" width="50%"></a>
+            <h3>Limite des Certificats</h3></div>
+        <div class="flex-item"><a href="{{ path('semestre') }}"><img src="/pics/semester.jpg" width="50%"></a>
+            <h3>Semestres</h3></div>
+        <div class="flex-item"><a href="{{ path('stage') }}"><img src="/pics/intern.jpg" width="50%"></a>
+            <h3>Stages</h3></div>
+    </div>
+
+{% endblock %}

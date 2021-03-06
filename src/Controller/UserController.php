@@ -5,13 +5,10 @@ namespace App\Controller;
 use App\Entity\Etudiant;
 use App\Entity\Certificats;
 use App\Entity\Limite;
-
-use App\Entity\Note;
 use App\Entity\Notification;
-use App\Entity\Stage;
 use App\Entity\User;
 use App\Form\CertificatsType;
-use phpDocumentor\Reflection\Types\This;
+use App\Form\UpdateUserType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,18 +17,85 @@ use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\Security\Core\Security;
 
 class UserController extends AbstractController
 {
     /**
-     * @Route("/user", name="user")
+     * @Route("/admin/user", name="user")
      */
     public function index(): Response
     {
-        return $this->render('user/index.html.twig', [
-            'controller_name' => 'UserController',
+        $user = $this->getDoctrine()->getRepository(User::class)->findAll();
+        return $this->render('user/cruduser.html.twig', array('users' => $user));
+    }
+
+    /**
+     * @Route("/admin/user/{id}", name="read_user")
+     */
+
+    public function showUser(int $id): Response
+    {
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($id);
+
+        if(!$user) {
+            throw $this->createNotFoundException(
+                "Aucun utilisateur existe avec l'id ".$id
+            );
+        }
+        return new Response("l'utilisateur ".$user->getId()." est liee avec l'etudiant ".$user->getEtudiant());
+    }
+
+    /**
+     * @Route("/admin/modifier/user/{id}", name="modifier_user")
+     */
+
+    public function modifierUser(Request $request, $id, Security $security): Response
+    {
+        $user = new User($security);
+        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $form = $this->createForm(UpdateUserType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $user = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('app_home');
+        }
+        return $this->render('user/updateuser.html.twig', [
+            'form' => $form->createView(), 'users' => $user,
         ]);
     }
+
+
+    /**
+     * @Route("/admin/user/delete/{id}")
+     */
+    public function delete(int $id): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $entityManager->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No user found with id '.$id
+            );
+        }
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return new Response("l'utilisateur ".$user->getId()." est liee avec l'etudiant ".$user->getEtudiant().' a ete supprime');
+    }
+
+
+
 
     /**
      * @Route("/profile", name="user_profile")

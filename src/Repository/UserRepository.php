@@ -138,4 +138,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $sql->getResult();
 
     }
+    public function adminname($id): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $sql =$entityManager->createQuery( ' SELECT ad.prenom
+        FROM App\Entity\User u INNER JOIN App\Entity\Administrateur ad WITH u.administrateur=ad.id
+        WHERE u.id=:id' )->setParameter('id',$id);
+
+        return $sql->getResult();
+
+    }
 }
