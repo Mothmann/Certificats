@@ -9,6 +9,7 @@
 </style>
 
 <div class="example-wrapper">
+    <h3>nouvelle demandes</h3>
     <table>
         <tr>
             <td>id</td>
@@ -30,6 +31,27 @@
                 <td><a class="btn shadow-1 rounded-1 blue red" href="{{ path('rejeter', { 'id': demande.id }) }}">rejeter</a></td>
             </tr>
         {% endfor %}
+    </table>
+    <table>
+        <h3>les demandes acceptes</h3>
+        <tr>
+            <td>id</td>
+            <td>type</td>
+            <td>nom</td>
+            <td>prenom</td>
+            <td>created_at</td>
+            <td>Voir</td>
+        </tr>
+    {% for certificat in certificats %}
+        <tr>
+            <td id="{{ certificat.id }}">{{ certificat.id }}</td>
+            <td>{{ certificat.nom }}</td>
+            <td>{{ certificat.prenom }}</td>
+            <td>{{ certificat.name }}</td>
+            <td>{{ certificat.created_at|date("d-m-Y") }}</td>
+            <td><a class="btn shadow-1 rounded-1 blue" href="{{ path('showpdf', { 'id': certificat.id }) }}">Voir</a></td>
+        </tr>
+    {% endfor %}
     </table>
 </div>
 {% endblock %}

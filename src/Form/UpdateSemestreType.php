@@ -17,11 +17,7 @@ class UpdateSemestreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('entreprise',TextType::class)
-            ->add('responsable_de_stage',TextType::class)
-            ->add('ville',TextType::class)
-            ->add('user',EntityType::class, [
-                'class' => User::class])
+            ->add('libelle',TextType::class)
             ->add('modifier', SubmitType::class)
         ;
     }

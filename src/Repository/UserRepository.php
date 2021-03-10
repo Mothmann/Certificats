@@ -149,4 +149,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $sql->getResult();
 
     }
+
+    public function touteslesdemandes(): array
+
+    {   $entityManager = $this->getEntityManager();
+
+        $sql =$entityManager->createQuery( 'SELECT ca.name,ce.created_at,ce.id,et.nom,et.prenom
+            FROM App\Entity\Categories ca INNER JOIN App\Entity\Certificats ce WITH ca.id=ce.categories INNER JOIN App\Entity\User u WITH ce.user=u.id INNER JOIN App\Entity\Etudiant et WITH u.etudiant=et.id
+            WHERE ce.status=:status')->setParameter('status','terminer') ;
+
+        return $sql->getResult();
+    }
 }

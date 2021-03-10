@@ -190,7 +190,10 @@ class UserController extends AbstractController
         $demande = $this->getDoctrine()
             ->getRepository(User::class)
             ->demande();
-        return $this->render('user/demande.html.twig', ['demandes' => $demande]);
+        $terminer = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->touteslesdemandes();
+        return $this->render('user/demande.html.twig', ['demandes' => $demande,'certificats' => $terminer]);
     }
     /**
      * @Route("/admin/certificat/pdfcreate/{id}", name="pdf_create")
