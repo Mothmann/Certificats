@@ -61,7 +61,15 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $user = $form->getData();
-
+            $admin = $form["administrateur"]->getData();
+            $roleadmin = array("ROLE_ADMIN");
+            $roleuser = array();
+            if ($admin != null){
+                $user->setRoles($roleadmin);
+            }
+            else {
+               $user->setRoles($roleuser);
+            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
